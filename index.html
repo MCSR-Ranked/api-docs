@@ -111,7 +111,7 @@
 			<!-- MAIN CONTENT -->
 			<div class="main-content">
 				<div class="alert alert-danger">
-					UTR has changed their endpoint to https://agw-prod.myutr.com. Be sure to replace that in all of the below examples.
+					UTR has changed their endpoint to https://app.universaltennis.com. Be sure to replace that in all of the below examples.
 					In addition, you may use the "JWT" cookie from your user session as a bearer token to authenticate requests.
 				</div>
 				<div class="container-fluid" id="player-profile">
@@ -3274,6 +3274,12 @@
 												<td><code>Integer</code></td>
 												<td><code>Required</code></td>
 												<td>The Club ID can be obtained using a <a href="#search-club">club search</a> or from a club URL on the <a href="https://www.myutr.com">Universal Tennis</a> website.</td>
+											</tr>
+											<tr>
+												<td>Count</td>
+												<td><code>Integer</code></td>
+												<td><code>Optional</code></td>
+												<td>Number of results to display. Default is 20.</td>
 											</tr>
 										</tbody>
 									</table>
