@@ -138,7 +138,7 @@ const endpoints = {
                 name: '{match_id}',
                 type: 'integer',
                 required: true,
-                description: 'UUID or Nickname of User. UUID should be without dashes(`-`).'
+                description: 'ID of match'
             }
         ],
         sample: `{"status":"success","data":{"match_id":141463,"seed_type":"ruined_portal","match_type":3,"winner":"13f9b2021cad450daf5ca6874e1ec39e","members":[{"uuid":"13f9b2021cad450daf5ca6874e1ec39e","nickname":"Y_GangBak","badge":0,"elo_rate":1000,"elo_rank":null},{"uuid":"bbc886da1b024739b4b80f1542e9f61d","nickname":"RED_LIME","badge":3,"elo_rate":1189,"elo_rank":146}],"final_time":126020,"score_changes":null,"forfeit":true,"match_season":1,"category":"ANY","match_date":1681359504,"is_decay":false,"timelines":[{"time":126015,"timeline":"projectelo.timeline.forfeit","uuid":"bbc886da1b024739b4b80f1542e9f61d"},{"time":122448,"timeline":"story.enter_the_nether","uuid":"bbc886da1b024739b4b80f1542e9f61d"},{"time":122448,"timeline":"nether.root","uuid":"bbc886da1b024739b4b80f1542e9f61d"},{"time":114932,"timeline":"story.form_obsidian","uuid":"bbc886da1b024739b4b80f1542e9f61d"},{"time":85128,"timeline":"nether.find_fortress","uuid":"13f9b2021cad450daf5ca6874e1ec39e"},{"time":31985,"timeline":"nether.root","uuid":"13f9b2021cad450daf5ca6874e1ec39e"},{"time":31985,"timeline":"story.enter_the_nether","uuid":"13f9b2021cad450daf5ca6874e1ec39e"},{"time":23480,"timeline":"story.form_obsidian","uuid":"13f9b2021cad450daf5ca6874e1ec39e"}]}}`,
