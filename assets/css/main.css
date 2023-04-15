@@ -36,8 +36,7 @@ th {
 
 .page-title {
   margin-top: 0;
-  margin-bottom: 30px;
-  font-weight: 300; }
+  margin-bottom: 30px; }
 
 footer {
   position: absolute;
@@ -45,6 +44,13 @@ footer {
   right: 0;
   padding-top: 15px;
   padding-bottom: 10px; }
+
+hr {
+  border-top: 2px solid #ccc;}
+
+.pointer {
+  cursor: pointer;
+}
 
 .copyright {
   margin-bottom: 0;
@@ -624,9 +630,9 @@ fieldset[disabled] .btn {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
-  -moz-box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-  -webkit-box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  -moz-box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   background-color: #fff;
   margin-bottom: 30px; }
   .panel .panel-heading,
@@ -640,8 +646,7 @@ fieldset[disabled] .btn {
     position: relative; }
     .panel .panel-heading .panel-title {
       margin: 0;
-      font-size: 18px;
-      font-weight: 300; }
+      font-size: 18px; }
     .panel .panel-heading button {
       padding: 0;
       margin-left: 5px;
