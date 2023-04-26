@@ -128,6 +128,47 @@ const endpoints = {
         nullable: ['data.score_changes', 'data.winner'],
         specificTypes: {'data.score_changes': 'ScoreChange[]', 'data.members': 'PlayerInfo[]', 'data.match_date': 'Date', 'data.final_time': 'MatchDuration'}
     },
+    'matches/': {
+        title: `Get Recent Matches`,
+        method: 'GET',
+        category: 'matches',
+        description: 'Returns the recent matches.',
+        params: [
+            {
+                name: 'page',
+                type: 'integer',
+                required: false,
+                description: 'Pagination of match list, it must be `0` to `99`. (default: `0`)'
+            },
+            {
+                name: 'count',
+                type: 'integer',
+                required: false,
+                description: 'Number of match count each page, it must `1` to `50`. (default: `20`)'
+            },
+            {
+                name: 'filter',
+                type: 'MatchType?',
+                required: false,
+                description: 'Only returns match list of the selected match type. (default: `null`)'
+            },
+            {
+                name: 'season',
+                type: 'integer',
+                required: false,
+                description: 'Specific season match (default: current season number)'
+            },
+            {
+                name: 'excludedecay',
+                type: 'any?',
+                required: false,
+                description: 'Whether a exclude decay matches. if you want to use it, just add parameter only like `?excludedecay`'
+            },
+        ],
+        sample: `{"status":"success","data":[{"match_id":179534,"match_type":3,"match_date":1682164017,"winner":"bbc886da1b024739b4b80f1542e9f61d","final_time":1162154,"match_season":1,"members":[{"nickname":"PurpleEffect","uuid":"51ddfb15c24049b1b8b5bce3698b61d2","badge":0,"elo_rate":1210,"elo_rank":311},{"nickname":"panzer1206","uuid":"0b4f8a475cfc4561973d08d63ecc3548","badge":0,"elo_rate":1017,"elo_rank":508},{"nickname":"RED_LIME","uuid":"bbc886da1b024739b4b80f1542e9f61d","badge":3,"elo_rate":1197,"elo_rank":333}],"score_changes":null,"forfeit":false,"is_decay":false}]}`,
+        nullable: ['data.score_changes', 'data.winner'],
+        specificTypes: {'data.score_changes': 'ScoreChange[]', 'data.members': 'PlayerInfo[]', 'data.match_date': 'Date', 'data.final_time': 'MatchDuration'}
+    },
     'matches/{match_id}': {
         title: `Get Match Info`,
         method: 'GET',
