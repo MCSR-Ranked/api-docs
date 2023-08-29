@@ -65,6 +65,7 @@
                   <li><a href="#objects-matchtype" class=""><span class="label label-primary">integer</span> &nbsp; MatchType</a></li>
                   <li><a href="#objects-matchduration" class=""><span class="label label-primary">integer</span> &nbsp; MatchDuration</a></li>
                   <li><a href="#objects-date" class=""><span class="label label-primary">integer</span> &nbsp; Date</a></li>
+                  <li><a href="#objects-useridentifier" class=""><span class="label label-primary">string</span> &nbsp; UserIdentifier</a></li>
                 </ul>
               </div>
             </li>
@@ -438,6 +439,43 @@
         <div class="container-fluid" id="objects-date">
           <h2 class="page-title"><strong><span class="label label-primary">integer</span> &nbsp; Date</strong></h2>
           <h4 class="page-title">Displays a specific date as an epoch time (timestamp) in seconds. (NOT milliseconds!)</h4>
+        </div>
+        <hr />
+        <div class="container-fluid" id="objects-useridentifier">
+          <h2 class="page-title"><strong><span class="label label-primary">string</span> &nbsp; UserIdentifier</strong></h2>
+          <h4 class="page-title">Identifier used when getting user information. You must use one of the formats below.</h4>
+          <div class="row">
+            <div class="panel">
+              <div class="panel-body">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Type</th>
+                      <th>Description</th>
+                      <th>Example</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>UUID</td>
+                      <td>UUID of User, without dashes(<code>-</code>).</td>
+                      <td><code>bbc886da1b024739b4b80f1542e9f61d</code></td>
+                    </tr>
+                    <tr>
+                      <td>Nickname</td>
+                      <td>Nickname of User. It's not case sensitive.</td>
+                      <td><code>RED_LIME</code></td>
+                    </tr>
+                    <tr>
+                      <td>Discord ID</td>
+                      <td>Linked Discord ID(Snowflake) of User. Must be <code>discord-[ID]</code> format.</td>
+                      <td><code>discord-338669823167037440</code></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
         <hr />
       </div>

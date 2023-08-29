@@ -14,9 +14,9 @@ const endpoints = {
         params: [
             {
                 name: '{identifier}',
-                type: 'string',
+                type: 'UserIdentifier',
                 required: true,
-                description: 'UUID or Nickname of User. UUID should be without dashes(`-`).'
+                description: 'Check the `Objects#UserIdentifier` section.'
             }
         ],
         sample: `{"status":"success","data":{"uuid":"bbc886da1b024739b4b80f1542e9f61d","nickname":"RED_LIME","badge":3,"elo_rate":1189,"elo_rank":146,"created_time":1676211633,"latest_time":1681448690,"total_played":97,"season_played":23,"highest_winstreak":7,"current_winstreak":0,"prev_elo_rate":1169,"best_elo_rate":1211,"best_record_time":837656,"records":{"1":{"win":0,"lose":0,"draw":0},"2":{"win":15,"lose":7,"draw":1}},"achievements":[{"achieve_type":6,"tag_name":"season_0_top500","achieve_time":1679875227,"achieve_data":"456"}],"connections":{"discord":{"id":"338669823167037440","name":"RedLime#0817"},"twitch":{"id":"163546699","name":"RedLimeRL"},"youtube":{"id":"UCxZDE9A8qewsM9BWNWj9nVg","name":"RedLime"}}}}`,
@@ -31,9 +31,9 @@ const endpoints = {
         params: [
             {
                 name: '{identifier}',
-                type: 'string',
+                type: 'UserIdentifier',
                 required: true,
-                description: 'UUID or Nickname of User. UUID should be without dashes(`-`).'
+                description: 'Check the `Objects#UserIdentifier` section.'
             },
             {
                 name: 'page',
@@ -72,15 +72,15 @@ const endpoints = {
         params: [
             {
                 name: '{identifier1}',
-                type: 'string',
+                type: 'UserIdentifier',
                 required: true,
-                description: 'UUID or Nickname of User. UUID should be without dashes(`-`).'
+                description: 'Check the `Objects#UserIdentifier` section.'
             },
             {
                 name: '{identifier2}',
-                type: 'string',
+                type: 'UserIdentifier',
                 required: true,
-                description: 'UUID or Nickname of User. UUID should be without dashes(`-`).'
+                description: 'Check the `Objects#UserIdentifier` section.'
             }
         ],
         sample: `{"status":"success","data":{"users":[{"uuid":"bbc886da1b024739b4b80f1542e9f61d","nickname":"RED_LIME","badge":3,"elo_rate":1189,"elo_rank":146},{"uuid":"13f9b2021cad450daf5ca6874e1ec39e","nickname":"Y_GangBak","badge":0,"elo_rate":1000,"elo_rank":null}],"win_count":{"1":{"total":3,"bbc886da1b024739b4b80f1542e9f61d":1,"13f9b2021cad450daf5ca6874e1ec39e":2},"2":{"total":5,"bbc886da1b024739b4b80f1542e9f61d":2,"13f9b2021cad450daf5ca6874e1ec39e":2}}}}`,
@@ -94,10 +94,16 @@ const endpoints = {
         description: 'Returns the recent matches between `{identifier1}` and `{identifier2}`.',
         params: [
             {
-                name: '{identifier}',
-                type: 'string',
+                name: '{identifier1}',
+                type: 'UserIdentifier',
                 required: true,
-                description: 'UUID or Nickname of User. UUID should be without dashes(`-`).'
+                description: 'Check the `Objects#UserIdentifier` section.'
+            },
+            {
+                name: '{identifier2}',
+                type: 'UserIdentifier',
+                required: true,
+                description: 'Check the `Objects#UserIdentifier` section.'
             },
             {
                 name: 'page',
