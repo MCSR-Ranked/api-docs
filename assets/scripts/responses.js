@@ -199,10 +199,10 @@ const endpoints = {
         description: 'Returns Top 150 Leaderboard for Elo rates',
         params: [
             {
-                name: 'type',
-                type: 'integer (0 or 1)',
+                name: 'season',
+                type: 'integer',
                 required: false,
-                description: 'Type of elo leaderboard. `0` is current season leaderboard, `1` is last season leaderboard. (default: `0`)'
+                description: 'Used to filter the elo leaderboard by a specific season. (default: current season number)'
             }
         ],
         sample: `{"status":"success","data":{"users":[{"uuid":"9a8e24df4c8549d696a6951da84fa5c4","nickname":"Feinberg","badge":3,"elo_rate":2005,"elo_rank":1}],"season_number":1,"season_end_time":1684022400000}}`,
@@ -220,6 +220,12 @@ const endpoints = {
                 type: 'any?',
                 required: false,
                 description: 'Type of best time leaderboard. If you send request with this parameter, it returns only the fastest run per player.'
+            },
+            {
+                name: 'alltime',
+                type: 'any?',
+                required: false,
+                description: 'Type of best time leaderboard. If you send request with this parameter, it returns the fastest runs of all time, otherwise it only returns the fastest runs from current season.'
             }
         ],
         sample: `{"status":"success","data":[{"final_time_rank":1,"match_id":105801,"final_time":475802,"match_date":1680079195,"user":{"uuid":"9a8e24df4c8549d696a6951da84fa5c4","nickname":"Feinberg","badge":3,"elo_rate":2005,"elo_rank":1}}]}`,
