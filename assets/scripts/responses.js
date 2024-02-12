@@ -463,7 +463,7 @@ const endpoints = {
                 name: 'season',
                 type: 'Integer',
                 required: false,
-                description: 'Specific season (default: current season number)'
+                description: 'Specific season. If it\'s `0`, target season will be current season. If it\'s not defined, get leaderboard for all seasons. (default: undefined)'
             },
             {
                 name: 'distinct',
