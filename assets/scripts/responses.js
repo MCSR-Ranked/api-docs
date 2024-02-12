@@ -57,7 +57,7 @@ const endpoints = {
             {
                 name: 'achievements.total',
                 type: 'Achievement[]',
-                description: 'A list of user\'s every achievements'
+                description: 'A list of user\'s every achievements except `achievements.display`'
             },
             {
                 name: 'timestamp.firstOnline',
@@ -110,6 +110,11 @@ const endpoints = {
                 description: 'Last Elo rank of season'
             },
             {
+                name: 'seasonResult.last.phasePoint',
+                type: 'Integer',
+                description: 'Last phase points of season'
+            },
+            {
                 name: 'seasonResult.highest',
                 type: 'Integer',
                 description: 'Highest Elo rate of season'
@@ -119,8 +124,28 @@ const endpoints = {
                 type: 'Integer',
                 description: 'Lowest Elo rate of season'
             },
+            {
+                name: 'seasonResult.phases[].phase',
+                type: 'Integer',
+                description: 'Phase number'
+            },
+            {
+                name: 'seasonResult.phases[].eloRate',
+                type: 'Integer',
+                description: 'Elo rate at phase ended'
+            },
+            {
+                name: 'seasonResult.phases[].eloRank',
+                type: 'Integer',
+                description: 'Elo rank at phase ended'
+            },
+            {
+                name: 'seasonResult.phases[].point',
+                type: 'Integer',
+                description: 'Phase reword point'
+            },
         ],
-        sample: `{"status":"success","data":{"uuid":"bbc886da1b024739b4b80f1542e9f61d","nickname":"RED_LIME","roleType":3,"eloRate":1120,"eloRank":1354,"achievements":{"display":[{"id":"seasonResult","date":1679875227,"data":["0","456"],"level":6},{"id":"seasonResult","date":1686787248,"data":["1","417"],"level":6},{"id":"seasonResult","date":1695081662,"data":["2","639"],"level":7}],"total":[{"id":"seasonResult","date":1679875227,"data":["0","456"],"level":6},{"id":"seasonResult","date":1686787248,"data":["1","417"],"level":6},{"id":"seasonResult","date":1695081662,"data":["2","639"],"level":7}]},"timestamp":{"firstOnline":1676211633,"lastOnline":1698609147,"lastRanked":1695836921},"statistics":{"season":{"bestTime":{"ranked":207285,"casual":407285},"highestWinStreak":{"ranked":4,"casual":0},"currentWinStreak":{"ranked":0,"casual":0},"playedMatches":{"ranked":60,"casual":0},"playtime":{"ranked":51219898,"casual":0},"forfeits":{"ranked":0,"casual":0},"completions":{"ranked":36,"casual":0},"wins":{"ranked":36,"casual":0},"loses":{"ranked":22,"casual":0}},"total":{"bestTime":{"ranked":207285,"casual":307285},"highestWinStreak":{"ranked":4,"casual":0},"currentWinStreak":{"ranked":0,"casual":0},"playedMatches":{"ranked":67,"casual":0},"playtime":{"ranked":55518342,"casual":0},"forfeits":{"ranked":0,"casual":0},"completions":{"ranked":38,"casual":0},"wins":{"ranked":38,"casual":0},"loses":{"ranked":26,"casual":0}}},"connections":{"twitch":{"id":"163546699","name":"RedLimeRL"},"youtube":{"id":"UCxZDE9A8qewsM9BWNWj9nVg","name":"RedLime"}},"seasonResult":{"last":{"eloRate":1276,"eloRank":417},"highest":1292,"lowest":1044}}}`,
+        sample: `{"status":"success","data":{"uuid":"7665f76f431b41c6b321bea16aff913b","nickname":"lowk3y_","roleType":0,"eloRate":1966,"eloRank":4,"achievements":{"display":[{"id":"playoffsResult","date":1696807856,"data":["2"],"level":1},{"id":"seasonResult","date":1695081661,"data":["2","1"],"level":1},{"id":"bestTime","date":1706794941,"data":[],"level":11}],"total":[{"id":"highestWinStreak","date":1706794941,"data":[],"level":6,"goal":20},{"id":"playedMatches","date":1706794941,"data":[],"level":10,"goal":5000},{"id":"playtime","date":1706794941,"data":[],"level":8,"goal":3600000000},{"id":"wins","date":1706794941,"data":[],"level":9,"goal":2000},{"id":"seasonResult","date":1704499267,"data":["3","3"],"level":2},{"id":"seasonResult","date":1686787247,"data":["1","8"],"level":3}]},"timestamp":{"firstOnline":1676490707,"lastOnline":1707732310,"lastRanked":1707739886},"statistics":{"season":{"bestTime":{"ranked":495485,"casual":503736},"highestWinStreak":{"ranked":12,"casual":2},"currentWinStreak":{"ranked":0,"casual":1},"playedMatches":{"ranked":198,"casual":11},"playtime":{"ranked":128755994,"casual":6621089},"forfeits":{"ranked":1,"casual":0},"completions":{"ranked":112,"casual":2},"wins":{"ranked":135,"casual":4},"loses":{"ranked":53,"casual":4}},"total":{"bestTime":{"ranked":380341,"casual":489962},"highestWinStreak":{"ranked":18,"casual":3},"currentWinStreak":{"ranked":0,"casual":1},"playedMatches":{"ranked":2864,"casual":46},"playtime":{"ranked":1933913181,"casual":14962658},"forfeits":{"ranked":171,"casual":13},"completions":{"ranked":1345,"casual":8},"wins":{"ranked":1809,"casual":17},"loses":{"ranked":959,"casual":19}}},"connections":{"discord":{"id":"1037457184952434819","name":"lowkey#0996"},"youtube":{"id":"UC_HX7WdiAWRZgcG7aOYtCNg","name":"lowkey"},"twitch":{"id":"0lowkey","name":"0lowkey"}},"seasonResult":{"last":{"eloRate":1966,"eloRank":4,"phasePoint":50},"highest":2126,"lowest":1941,"phases":[{"phase":1,"eloRate":2126,"eloRank":1,"point":50}]}}}`,
     },
     'users/{identifier}/matches': {
         title: `Get User Matches`,
@@ -190,6 +215,12 @@ const endpoints = {
                 type: 'UserIdentifier',
                 required: true,
                 description: 'Check the `Objects#UserIdentifier` section.'
+            },
+            {
+                name: 'season',
+                type: 'Integer',
+                required: false,
+                description: 'Specific season match (default: current season number)'
             }
         ],
         structures: [
@@ -331,7 +362,7 @@ const endpoints = {
         title: `Get Elo Leaderboard`,
         method: 'GET',
         category: 'leaderboards',
-        description: 'Returns Top 150 Leaderboard for Elo rates',
+        description: 'Returns Top 150 Leaderboard for Elo rates (it\'s not always 150 players due to same ranks)',
         params: [
             {
                 name: 'season',
@@ -363,9 +394,64 @@ const endpoints = {
                 name: 'users[].seasonResult.eloRank',
                 type: 'Integer',
                 description: 'Final Elo rank of player in target season'
+            },
+            {
+                name: 'users[].seasonResult.eloRank',
+                type: 'Integer',
+                description: 'Final phase points of player in target season'
             }
         ],
-        sample: `{"status":"success","data":{"season":{"endsAt":1702857600,"number":3},"users":[{"uuid":"562a308be86c4ec09438387860e792cc","nickname":"Oxidiot","roleType":0,"eloRate":2083,"eloRank":1,"seasonResult":{"eloRate":2083,"eloRank":1}},{"uuid":"7665f76f431b41c6b321bea16aff913b","nickname":"lowk3y_","roleType":0,"eloRate":2027,"eloRank":2,"seasonResult":{"eloRate":2027,"eloRank":2}}]}}`,
+        sample: `{"status":"success","data":{"season":{"endsAt":1712448000,"number":4},"users":[{"uuid":"3c8757790ab0400b8b9e3936e0dd535b","nickname":"doogile","roleType":3,"eloRate":2175,"eloRank":1,"seasonResult":{"eloRate":2175,"eloRank":1,"phasePoint":40}},{"uuid":"17e787d1d6374f818b294f2319db370d","nickname":"silverrruns","roleType":0,"eloRate":2002,"eloRank":2,"seasonResult":{"eloRate":2002,"eloRank":2,"phasePoint":25}},{"uuid":"70eb9286e3e24153a8b37c8f884f1292","nickname":"7rowl","roleType":0,"eloRate":1969,"eloRank":3,"seasonResult":{"eloRate":1969,"eloRank":3,"phasePoint":35}},{"uuid":"7665f76f431b41c6b321bea16aff913b","nickname":"lowk3y_","roleType":0,"eloRate":1966,"eloRank":4,"seasonResult":{"eloRate":1966,"eloRank":4,"phasePoint":50}},{"uuid":"af22aaab9ee74596a3578bd6345d25b5","nickname":"Priffin","roleType":0,"eloRate":1955,"eloRank":5,"seasonResult":{"eloRate":1955,"eloRank":5,"phasePoint":25}},{"uuid":"a29a2e3d1ed649f8b122de8ddad2668a","nickname":"Jud0zwerg","roleType":0,"eloRate":1446,"eloRank":147,"seasonResult":{"eloRate":1446,"eloRank":147,"phasePoint":0}},{"uuid":"0388b80ebe6c4216b4a8305c0cd27894","nickname":"tommorerow","roleType":1,"eloRate":1445,"eloRank":148,"seasonResult":{"eloRate":1445,"eloRank":148,"phasePoint":5}},{"uuid":"8021b1eb133346c3b0b88d19c5be9188","nickname":"gabboooz","roleType":0,"eloRate":1443,"eloRank":149,"seasonResult":{"eloRate":1443,"eloRank":149,"phasePoint":0}},{"uuid":"aa0aee82f7a94591a076331d899f836c","nickname":"sacanagem_online","roleType":0,"eloRate":1439,"eloRank":150,"seasonResult":{"eloRate":1439,"eloRank":150,"phasePoint":5}},{"uuid":"c7802cb7c30c47aabc1a7ec790ff2260","nickname":"iKme_","roleType":0,"eloRate":1439,"eloRank":150,"seasonResult":{"eloRate":1439,"eloRank":150,"phasePoint":0}}]}}`,
+    },
+    'phase-leaderboard': {
+        title: `Get Season Phase Points Leaderboard`,
+        method: 'GET',
+        category: 'leaderboards',
+        description: 'Returns Top 100 Phase Points Leaderboard for Current Season',
+        params: [
+            {
+                name: 'season',
+                type: 'Integer',
+                required: false,
+                description: 'Specific season (default: current season number)'
+            }
+        ],
+        structures: [
+            {
+                name: 'phase.endsAt',
+                type: 'Date?',
+                description: 'Date of season ends. If target season is not current season it will be `null`'
+            },
+            {
+                name: 'phase.number',
+                type: 'Integer?',
+                description: 'Current phase number of the season. If season is old, it will be `null`'
+            },
+            {
+                name: 'phase.season',
+                type: 'Integer'
+            },
+            {
+                name: 'users',
+                type: 'UserProfile[]'
+            },
+            {
+                name: 'users[].seasonResult.eloRate',
+                type: 'Integer',
+                description: 'Final Elo rate of player in target season'
+            },
+            {
+                name: 'users[].seasonResult.eloRank',
+                type: 'Integer',
+                description: 'Final Elo rank of player in target season'
+            },
+            {
+                name: 'users[].seasonResult.eloRank',
+                type: 'Integer',
+                description: 'Final phase points of player in target season'
+            }
+        ],
+        sample: `{"status":"success","data":[{"rank":1,"season":1,"date":1685157577,"id":284288,"time":433388,"user":{"uuid":"08476f5847fc4daeba74a2544fc9d65b","nickname":"Zylenox","roleType":0,"eloRate":1523,"eloRank":90}},{"rank":2,"season":1,"date":1685696875,"id":300983,"time":457763,"user":{"uuid":"17e787d1d6374f818b294f2319db370d","nickname":"silverrruns","roleType":0,"eloRate":1818,"eloRank":15}}]}`
     },
     'record-leaderboard': {
         title: `Get Season Best Time Leaderboard`,
