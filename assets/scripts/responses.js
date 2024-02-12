@@ -425,7 +425,7 @@ const endpoints = {
             {
                 name: 'phase.number',
                 type: 'Integer?',
-                description: 'Current phase number of the season. If season is old, it will be `null`'
+                description: 'Current phase number of the season. If target season is not current season it will be `null`'
             },
             {
                 name: 'phase.season',
