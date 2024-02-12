@@ -58,14 +58,13 @@
               <a href="#responses-object" data-toggle="collapse" class="collapsed"><i class="fa fa-sitemap"></i><span>Objects</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
               <div id="responses-object" class="collapse">
                 <ul class="nav">
-                  <li><a href="#objects-playerinfo" class=""><span class="label label-success">Class</span> &nbsp; PlayerInfo</a></li>
-                  <li><a href="#objects-scorechange" class=""><span class="label label-success">Class</span> &nbsp; ScoreChange</a></li>
-                  <li><a href="#objects-versuswincount" class=""><span class="label label-success">Class</span> &nbsp; VersusWinCount</a></li>
-                  <li><a href="#objects-matchtimeline" class=""><span class="label label-success">Class</span> &nbsp; MatchTimeline</a></li>
-                  <li><a href="#objects-matchtype" class=""><span class="label label-primary">integer</span> &nbsp; MatchType</a></li>
-                  <li><a href="#objects-matchduration" class=""><span class="label label-primary">integer</span> &nbsp; MatchDuration</a></li>
-                  <li><a href="#objects-date" class=""><span class="label label-primary">integer</span> &nbsp; Date</a></li>
-                  <li><a href="#objects-useridentifier" class=""><span class="label label-primary">string</span> &nbsp; UserIdentifier</a></li>
+                  <li><a href="#objects-userprofile" class=""><span class="label label-success">Class</span> &nbsp; UserProfile</a></li>
+                  <li><a href="#objects-achievement" class=""><span class="label label-success">Class</span> &nbsp; Achievement</a></li>
+                  <li><a href="#objects-matchinfo" class=""><span class="label label-success">Class</span> &nbsp; MatchInfo</a></li>
+                  <li><a href="#objects-useridentifier" class=""><span class="label label-primary">String</span> &nbsp; UserIdentifier</a></li>
+                  <li><a href="#objects-matchtype" class=""><span class="label label-primary">Integer</span> &nbsp; MatchType</a></li>
+                  <li><a href="#objects-date" class=""><span class="label label-primary">Integer</span> &nbsp; Date</a></li>
+                  <li><a href="#objects-time" class=""><span class="label label-primary">Integer</span> &nbsp; Time</a></li>
                 </ul>
               </div>
             </li>
@@ -190,8 +189,8 @@
           </div>
         </div>
         <hr />
-        <div class="container-fluid" id="objects-playerinfo">
-          <h2 class="page-title"><strong><span class="label label-success">Class</span> &nbsp; PlayerInfo</strong></h2>
+        <div class="container-fluid" id="objects-userprofile">
+          <h2 class="page-title"><strong><span class="label label-success">Class</span> &nbsp; UserProfile</strong></h2>
           <div class="row">
             <div class="panel">
               <div class="panel-body">
@@ -205,29 +204,29 @@
                   </thead>
                   <tbody>
                     <tr>
-                      <td>nickname</td>
-                      <td><code>string</code></td>
-                      <td>Player's nickname</td>
-                    </tr>
-                    <tr>
                       <td>uuid</td>
-                      <td><code>string</code></td>
-                      <td>Player's UUID</td>
+                      <td><code>String</code></td>
+                      <td>User's UUID</td>
                     </tr>
                     <tr>
-                      <td>badge</td>
-                      <td><code>integer</code></td>
-                      <td>Player's badge level, it's using for patreon supporter badge.</td>
+                      <td>nickname</td>
+                      <td><code>String</code></td>
+                      <td>User's nickname</td>
                     </tr>
                     <tr>
-                      <td>elo_rate</td>
-                      <td><code>integer</code></td>
-                      <td>Player's elo rate. sometimes this value is <code>-1</code>, that means player hasn't finished placement matches.</td>
+                      <td>roleType</td>
+                      <td><code>Integer</code></td>
+                      <td>User's role type</td>
                     </tr>
                     <tr>
-                      <td>elo_rank</td>
-                      <td><code>integer | null</code></td>
-                      <td>Player's elo ranking</td>
+                      <td>eloRate</td>
+                      <td><code>Integer?</code></td>
+                      <td>User's Elo rate, If user haven't finished placement matches it will be <code>null</code></td>
+                    </tr>
+                    <tr>
+                      <td>eloRank</td>
+                      <td><code>Integer?</code></td>
+                      <td>User's Elo rank</td>
                     </tr>
                   </tbody>
                 </table>
@@ -236,8 +235,8 @@
           </div>
         </div>
         <hr />
-        <div class="container-fluid" id="objects-scorechange">
-          <h2 class="page-title"><strong><span class="label label-success">Class</span> &nbsp; ScoreChange</strong></h2>
+        <div class="container-fluid" id="objects-achievement">
+          <h2 class="page-title"><strong><span class="label label-success">Class</span> &nbsp; Achievement</strong></h2>
           <div class="row">
             <div class="panel">
               <div class="panel-body">
@@ -251,19 +250,24 @@
                   </thead>
                   <tbody>
                     <tr>
-                      <td>uuid</td>
-                      <td><code>string</code></td>
-                      <td>Player's UUID</td>
+                      <td>id</td>
+                      <td><code>String</code></td>
+                      <td>Achievement Identifier</td>
                     </tr>
                     <tr>
-                      <td>change</td>
-                      <td><code>integer</code></td>
+                      <td>date</td>
+                      <td><code>Date</code></td>
                       <td>Amount of changed elo rates</td>
                     </tr>
                     <tr>
-                      <td>score</td>
-                      <td><code>integer</code></td>
-                      <td>Player's elo rates before change</td>
+                      <td>data</td>
+                      <td><code>String[]</code></td>
+                      <td>Additional data array</td>
+                    </tr>
+                    <tr>
+                      <td>level</td>
+                      <td><code>Integer</code></td>
+                      <td>Level of achievement</td>
                     </tr>
                   </tbody>
                 </table>
@@ -272,12 +276,13 @@
           </div>
         </div>
         <hr />
-        <div class="container-fluid" id="objects-versuswincount">
-          <h2 class="page-title"><strong><span class="label label-success">Class</span> &nbsp; VersusWinCount</strong></h2>
+        <div class="container-fluid" id="objects-matchinfo">
+          <h2 class="page-title"><strong><span class="label label-success">Class</span> &nbsp; MatchInfo</strong></h2>
           <div class="row">
             <div class="panel">
               <div class="panel-body">
                 <table class="table table-hover">
+                  <code>Advanced</code> parameters are only available with <code>/matches/{match_id}</code> endpoint.
                   <thead>
                     <tr>
                       <th>Parameter</th>
@@ -287,19 +292,114 @@
                   </thead>
                   <tbody>
                     <tr>
-                      <td>total</td>
-                      <td><code>integer</code></td>
-                      <td>Number of matches between two players against each other, including draws.</td>
+                      <td>id</td>
+                      <td><code>String</code></td>
+                      <td></td>
                     </tr>
                     <tr>
-                      <td>{UUID1}</td>
-                      <td><code>integer</code></td>
-                      <td>Number of matches between two players against each other, but only player with the UUID of <code>{UUID1}</code> won</td>
+                      <td>type</td>
+                      <td><code>MatchType</code></td>
+                      <td></td>
                     </tr>
                     <tr>
-                      <td>{UUID2}</td>
-                      <td><code>integer</code></td>
-                      <td>Number of matches between two players against each other, but only player with the UUID of <code>{UUID2}</code> won</td>
+                      <td>season</td>
+                      <td><code>Integer</code></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>category</td>
+                      <td><code>String</code></td>
+                      <td>Match completions category. Default is <code>ANY</code></td>
+                    </tr>
+                    <tr>
+                      <td>date</td>
+                      <td><code>Date</code></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>players</td>
+                      <td><code>UserProfile[]</code></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>spectators</td>
+                      <td><code>UserProfile[]</code></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>result.uuid</td>
+                      <td><code>String?</code></td>
+                      <td>Winner's UUID, It will be `null` If match has draw</td>
+                    </tr>
+                    <tr>
+                      <td>result.time</td>
+                      <td><code>Time</code></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>forfeited</td>
+                      <td><code>Boolean</code></td>
+                      <td>Whether match has no completions</td>
+                    </tr>
+                    <tr>
+                      <td>decayed</td>
+                      <td><code>Boolean</code></td>
+                      <td>Whether match has decayed match</td>
+                    </tr>
+                    <tr>
+                      <td>rank.season</td>
+                      <td><code>Integer?</code></td>
+                      <td>Record rank of match's season</td>
+                    </tr>
+                    <tr>
+                      <td>rank.allTime</td>
+                      <td><code>Integer?</code></td>
+                      <td>Record rank of all-time</td>
+                    </tr>
+                    <tr>
+                      <td>changes[].uuid</td>
+                      <td><code>String</code></td>
+                      <td>UUID of player</td>
+                    </tr>
+                    <tr>
+                      <td>changes[].change</td>
+                      <td><code>Integer?</code></td>
+                      <td>Amount of changed Elo rate, if match has placements it will be <code>null</code></td>
+                    </tr>
+                    <tr>
+                      <td>changes[].eloRate</td>
+                      <td><code>Integer?</code></td>
+                      <td>Elo rate of player, if match has placements it will be <code>null</code></td>
+                    </tr>
+                    <tr>
+                      <td>seedType</td>
+                      <td><code>String?</code></td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>completions[].uuid</td>
+                      <td><code>String</code></td>
+                      <td>(Advanced) Player uuid of completion</td>
+                    </tr>
+                    <tr>
+                      <td>completions[].time</td>
+                      <td><code>Time</code></td>
+                      <td>(Advanced) Match time of completion</td>
+                    </tr>
+                    <tr>
+                      <td>timelines[].uuid</td>
+                      <td><code>String</code></td>
+                      <td>(Advanced) Player uuid of timeline</td>
+                    </tr>
+                    <tr>
+                      <td>timelines[].time</td>
+                      <td><code>Time</code></td>
+                      <td>(Advanced) Match time of timeline</td>
+                    </tr>
+                    <tr>
+                      <td>timelines[].type</td>
+                      <td><code>Time</code></td>
+                      <td>(Advanced) Identifier of timeline</td>
                     </tr>
                   </tbody>
                 </table>
@@ -307,34 +407,36 @@
             </div>
           </div>
         </div>
-        <div class="container-fluid" id="objects-matchtimeline">
-          <h2 class="page-title"><strong><span class="label label-success">Class</span> &nbsp; MatchTimeline</strong></h2>
+        <hr />
+        <div class="container-fluid" id="objects-useridentifier">
+          <h2 class="page-title"><strong><span class="label label-primary">String</span> &nbsp; UserIdentifier</strong></h2>
+          <h4 class="page-title">Identifier used when getting user information. You must use one of the formats below.</h4>
           <div class="row">
             <div class="panel">
               <div class="panel-body">
                 <table class="table table-hover">
                   <thead>
                     <tr>
-                      <th>Parameter</th>
                       <th>Type</th>
                       <th>Description</th>
+                      <th>Example</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td>uuid</td>
-                      <td><code>string</code></td>
-                      <td>Player's UUID</td>
+                      <td>UUID</td>
+                      <td>UUID of User, you can also use with dashes(<code>-</code>).</td>
+                      <td><code>bbc886da1b024739b4b80f1542e9f61d</code></td>
                     </tr>
                     <tr>
-                      <td>time</td>
-                      <td><code>integer</code></td>
-                      <td>Time the player got this timeline</td>
+                      <td>Nickname</td>
+                      <td>Nickname of User. It's not case sensitive.</td>
+                      <td><code>RED_LIME</code></td>
                     </tr>
                     <tr>
-                      <td>timeline</td>
-                      <td><code>string</code></td>
-                      <td>ID of timeline</td>
+                      <td>Discord ID</td>
+                      <td>Linked Discord ID(Snowflake) of User. Must be <code>discord.[ID]</code> format.</td>
+                      <td><code>discord.338669823167037440</code></td>
                     </tr>
                   </tbody>
                 </table>
@@ -344,7 +446,7 @@
         </div>
         <hr />
         <div class="container-fluid" id="objects-matchtype">
-          <h2 class="page-title"><strong><span class="label label-primary">integer</span> &nbsp; MatchType</strong></h2>
+          <h2 class="page-title"><strong><span class="label label-primary">Integer</span> &nbsp; MatchType</strong></h2>
           <div class="row">
             <div class="panel">
               <div class="panel-body">
@@ -379,51 +481,14 @@
           </div>
         </div>
         <hr />
-        <div class="container-fluid" id="objects-matchduration">
-          <h2 class="page-title"><strong><span class="label label-primary">integer</span> &nbsp; MatchDuration</strong></h2>
-          <h4 class="page-title">The amount of time the match took. Displays in millisecond.</h4>
-        </div>
-        <hr />
         <div class="container-fluid" id="objects-date">
-          <h2 class="page-title"><strong><span class="label label-primary">integer</span> &nbsp; Date</strong></h2>
+          <h2 class="page-title"><strong><span class="label label-primary">Integer</span> &nbsp; Date</strong></h2>
           <h4 class="page-title">Displays a specific date as an epoch time (timestamp) in seconds. (NOT milliseconds!)</h4>
         </div>
         <hr />
-        <div class="container-fluid" id="objects-useridentifier">
-          <h2 class="page-title"><strong><span class="label label-primary">string</span> &nbsp; UserIdentifier</strong></h2>
-          <h4 class="page-title">Identifier used when getting user information. You must use one of the formats below.</h4>
-          <div class="row">
-            <div class="panel">
-              <div class="panel-body">
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th>Type</th>
-                      <th>Description</th>
-                      <th>Example</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>UUID</td>
-                      <td>UUID of User, without dashes(<code>-</code>).</td>
-                      <td><code>bbc886da1b024739b4b80f1542e9f61d</code></td>
-                    </tr>
-                    <tr>
-                      <td>Nickname</td>
-                      <td>Nickname of User. It's not case sensitive.</td>
-                      <td><code>RED_LIME</code></td>
-                    </tr>
-                    <tr>
-                      <td>Discord ID</td>
-                      <td>Linked Discord ID(Snowflake) of User. Must be <code>discord-[ID]</code> format.</td>
-                      <td><code>discord-338669823167037440</code></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
+        <div class="container-fluid" id="objects-time">
+          <h2 class="page-title"><strong><span class="label label-primary">Integer</span> &nbsp; Time</strong></h2>
+          <h4 class="page-title">Displays a specific duration in milliseconds.</h4>
         </div>
         <hr />
       </div>
