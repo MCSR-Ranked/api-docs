@@ -8,10 +8,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
   <!-- VENDOR CSS -->
   <link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.min.css">
-  <link rel="stylesheet" href="assets/vendor/font-awesome/css/font-awesome.min.css">
+  <!-- <link rel="stylesheet" href="assets/vendor/font-awesome/css/font-awesome.min.css"> -->
   <link rel="stylesheet" href="assets/vendor/linearicons/style.css">
-  <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
-    integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" rel="stylesheet">
   <!-- MAIN CSS -->
   <link rel="stylesheet" href="assets/css/main.css">
   <!-- GOOGLE FONTS -->
@@ -69,7 +68,7 @@
               </div>
             </li>
             <li>
-              <a href="#responses-api-users" data-toggle="collapse" class="collapsed"><i class="fa fa-user-o"></i><span>Users</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+              <a href="#responses-api-users" data-toggle="collapse" class="collapsed"><i class="fa fa-user"></i><span>Users</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
               <div id="responses-api-users" class="collapse"><ul class="nav"></ul></div>
             </li>
             <li>
@@ -84,6 +83,10 @@
               <a href="#responses-api-leaderboards" data-toggle="collapse" class="collapsed"><i class="fa fa-list-ol"></i><span>Leaderboards</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
               <div id="responses-api-leaderboards" class="collapse"><ul class="nav"></ul></div>
             </li>
+            <li>
+              <a href="#responses-api-weekly-races" data-toggle="collapse" class="collapsed"><i class="fa fa-calendar-week"></i><span>Weekly Races</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+              <div id="responses-api-weekly-races" class="collapse"><ul class="nav"></ul></div>
+            </li>
             <li style="min-height: 80px;"></li>
           </ul>
         </nav>
@@ -95,7 +98,7 @@
       <!-- MAIN CONTENT -->
       <div class="main-content">
         <h1><strong>MCSR Ranked Rest API Document</strong></h1>
-        <div class="alert alert-danger">All endpoints have a ratelimit of 1000 requests per 30 minutes unless otherwise specified.</div>
+        <div class="alert alert-danger">All endpoints have a ratelimit of 500 requests per 10 minutes unless otherwise specified.<br>If you want to use API Key with expanded ratelimit, please make a #ticket in our <a href="https://mcsrranked.com/discord" target="_blank">Discord Server</a></div>
         <hr />
         <div class="container-fluid" id="response-200">
           <h2 class="page-title"><strong><span class="label label-success">200</span> &nbsp; Success Response</strong></h2>
@@ -374,7 +377,12 @@
                     <tr>
                       <td>seedType</td>
                       <td><code>String?</code></td>
-                      <td></td>
+                      <td>Overworld seed type of this match's seed</td>
+                    </tr>
+                    <tr>
+                      <td>bastionType</td>
+                      <td><code>String?</code></td>
+                      <td>Bastion in nether (as intended) type of this match's seed</td>
                     </tr>
                     <tr>
                       <td>completions[].uuid</td>
