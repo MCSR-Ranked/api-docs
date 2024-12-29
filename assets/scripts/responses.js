@@ -1,7 +1,7 @@
 const responses = {
     'response/200': `{"status":"success","data":{}}`,
     'response/400': `{"status":"error","data":null}`,
-    'response/401': `{"status":"error","data":"invalid \`filter\` query. it must be >= 0 or <= 3"}`,
+    'response/401': `{"status":"error","data":"invalid \`type\` query. it must be >= 0 or <= 3"}`,
     'response/429': `{"status":"error","data":"Too many requests"}`,
 }
 
@@ -144,8 +144,28 @@ const endpoints = {
                 type: 'Integer',
                 description: 'Phase reword point'
             },
+            {
+                name: 'weeklyRaces',
+                type: 'Object[]',
+                description: 'User\'s results of all weekly races'
+            },
+            {
+                name: 'weeklyRaces[].id',
+                type: 'Integer',
+                description: 'ID of the weekly race'
+            },
+            {
+                name: 'weeklyRaces[].time',
+                type: 'Time',
+                description: 'Final time of the weekly race'
+            },
+            {
+                name: 'weeklyRaces[].rank',
+                type: 'Integer',
+                description: 'Rank in the weekly race'
+            },
         ],
-        sample: `{"status":"success","data":{"uuid":"7665f76f431b41c6b321bea16aff913b","nickname":"lowk3y_","roleType":0,"eloRate":1966,"eloRank":4,"achievements":{"display":[{"id":"playoffsResult","date":1696807856,"data":["2"],"level":1},{"id":"seasonResult","date":1695081661,"data":["2","1"],"level":1},{"id":"bestTime","date":1706794941,"data":[],"level":11}],"total":[{"id":"highestWinStreak","date":1706794941,"data":[],"level":6,"goal":20},{"id":"playedMatches","date":1706794941,"data":[],"level":10,"goal":5000},{"id":"playtime","date":1706794941,"data":[],"level":8,"goal":3600000000},{"id":"wins","date":1706794941,"data":[],"level":9,"goal":2000},{"id":"seasonResult","date":1704499267,"data":["3","3"],"level":2},{"id":"seasonResult","date":1686787247,"data":["1","8"],"level":3}]},"timestamp":{"firstOnline":1676490707,"lastOnline":1707732310,"lastRanked":1707739886},"statistics":{"season":{"bestTime":{"ranked":495485,"casual":503736},"highestWinStreak":{"ranked":12,"casual":2},"currentWinStreak":{"ranked":0,"casual":1},"playedMatches":{"ranked":198,"casual":11},"playtime":{"ranked":128755994,"casual":6621089},"forfeits":{"ranked":1,"casual":0},"completions":{"ranked":112,"casual":2},"wins":{"ranked":135,"casual":4},"loses":{"ranked":53,"casual":4}},"total":{"bestTime":{"ranked":380341,"casual":489962},"highestWinStreak":{"ranked":18,"casual":3},"currentWinStreak":{"ranked":0,"casual":1},"playedMatches":{"ranked":2864,"casual":46},"playtime":{"ranked":1933913181,"casual":14962658},"forfeits":{"ranked":171,"casual":13},"completions":{"ranked":1345,"casual":8},"wins":{"ranked":1809,"casual":17},"loses":{"ranked":959,"casual":19}}},"connections":{"discord":{"id":"1037457184952434819","name":"lowkey#0996"},"youtube":{"id":"UC_HX7WdiAWRZgcG7aOYtCNg","name":"lowkey"},"twitch":{"id":"0lowkey","name":"0lowkey"}},"seasonResult":{"last":{"eloRate":1966,"eloRank":4,"phasePoint":50},"highest":2126,"lowest":1941,"phases":[{"phase":1,"eloRate":2126,"eloRank":1,"point":50}]}}}`,
+        sample: `{"status":"success","data":{"uuid":"7665f76f431b41c6b321bea16aff913b","nickname":"lowk3y_","roleType":0,"eloRate":1966,"eloRank":4,"achievements":{"display":[{"id":"playoffsResult","date":1696807856,"data":["2"],"level":1},{"id":"seasonResult","date":1695081661,"data":["2","1"],"level":1},{"id":"bestTime","date":1706794941,"data":[],"level":11}],"total":[{"id":"highestWinStreak","date":1706794941,"data":[],"level":6,"goal":20},{"id":"playedMatches","date":1706794941,"data":[],"level":10,"goal":5000},{"id":"playtime","date":1706794941,"data":[],"level":8,"goal":3600000000},{"id":"wins","date":1706794941,"data":[],"level":9,"goal":2000},{"id":"seasonResult","date":1704499267,"data":["3","3"],"level":2},{"id":"seasonResult","date":1686787247,"data":["1","8"],"level":3}]},"timestamp":{"firstOnline":1676490707,"lastOnline":1707732310,"lastRanked":1707739886},"statistics":{"season":{"bestTime":{"ranked":495485,"casual":503736},"highestWinStreak":{"ranked":12,"casual":2},"currentWinStreak":{"ranked":0,"casual":1},"playedMatches":{"ranked":198,"casual":11},"playtime":{"ranked":128755994,"casual":6621089},"forfeits":{"ranked":1,"casual":0},"completions":{"ranked":112,"casual":2},"wins":{"ranked":135,"casual":4},"loses":{"ranked":53,"casual":4}},"total":{"bestTime":{"ranked":380341,"casual":489962},"highestWinStreak":{"ranked":18,"casual":3},"currentWinStreak":{"ranked":0,"casual":1},"playedMatches":{"ranked":2864,"casual":46},"playtime":{"ranked":1933913181,"casual":14962658},"forfeits":{"ranked":171,"casual":13},"completions":{"ranked":1345,"casual":8},"wins":{"ranked":1809,"casual":17},"loses":{"ranked":959,"casual":19}}},"connections":{"discord":{"id":"1037457184952434819","name":"lowkey#0996"},"youtube":{"id":"UC_HX7WdiAWRZgcG7aOYtCNg","name":"lowkey"},"twitch":{"id":"0lowkey","name":"0lowkey"}},"seasonResult":{"last":{"eloRate":1966,"eloRank":4,"phasePoint":50},"highest":2126,"lowest":1941,"phases":[{"phase":1,"eloRate":2126,"eloRank":1,"point":50}]},"weeklyRaces":[{"id":1,"time":489237,"rank":8}]}}`,
     },
     'users/{identifier}/matches': {
         title: `Get User Matches`,
@@ -311,7 +331,7 @@ const endpoints = {
                 description: 'Number of match count each page, it must `1` to `50`. (default: `10`)'
             },
             {
-                name: 'filter',
+                name: 'type',
                 type: 'MatchType?',
                 required: false,
                 description: 'Only returns match list of the selected match type. (default: `null`)'
@@ -500,6 +520,63 @@ const endpoints = {
             }
         ],
         sample: `{"status":"success","data":[{"rank":1,"season":1,"date":1685157577,"id":284288,"time":433388,"user":{"uuid":"08476f5847fc4daeba74a2544fc9d65b","nickname":"Zylenox","roleType":0,"eloRate":1523,"eloRank":90}},{"rank":2,"season":1,"date":1685696875,"id":300983,"time":457763,"user":{"uuid":"17e787d1d6374f818b294f2319db370d","nickname":"silverrruns","roleType":0,"eloRate":1818,"eloRank":15}}]}`
+    },
+    'weekly-race/{id?}': {
+        title: `Get Weekly Race Leaderboard`,
+        method: 'GET',
+        category: 'weekly-races',
+        description: 'Returns Weekly Race info and leaderboard',
+        params: [
+            {
+                name: '{id}',
+                type: 'Integer',
+                required: false,
+                description: 'Specific week number (as `id` in this endpoint). (default: current weekly race)'
+            }
+        ],
+        structures: [
+            {
+                name: 'id',
+                type: 'Integer',
+            },
+            {
+                name: 'seed.overworld',
+                type: 'String',
+            },
+            {
+                name: 'seed.nether',
+                type: 'String',
+            },
+            {
+                name: 'seed.theEnd',
+                type: 'String',
+            },
+            {
+                name: 'seed.rng',
+                type: 'String',
+            },
+            {
+                name: 'endsAt',
+                type: 'Date',
+            },
+            {
+                name: 'leaderboard[].rank',
+                type: 'Integer'
+            },
+            {
+                name: 'leaderboard[].player',
+                type: 'User'
+            },
+            {
+                name: 'leaderboard[].time',
+                type: 'Time'
+            },
+            {
+                name: 'leaderboard[].replayExist',
+                type: 'Boolean'
+            }
+        ],
+        sample: `{"status":"success","data":{"id":13,"seed":{"overworld":"142605421743383832","nether":"142605421743383832","theEnd":"142605421743383832","rng":"142605421743383832"},"endsAt":1735516800,"leaderboard":[{"rank":1,"player":{"uuid":"4aed1e5e8f5c44e2bc0666e0c03781af","nickname":"nEmerald","roleType":0,"eloRate":1512,"eloRank":92},"time":324323,"replayExist":true},{"rank":2,"player":{"uuid":"92b63a39b36a445fa94c77ae212dcea3","nickname":"bing_pigs","roleType":0,"eloRate":1512,"eloRank":92},"time":345664,"replayExist":true},{"rank":3,"player":{"uuid":"5cd115f0ec1240659db152406c0984a3","nickname":"yjako","roleType":0,"eloRate":1512,"eloRank":92},"time":354563,"replayExist":false}]}}`
     },
 }
 
