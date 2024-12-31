@@ -189,7 +189,7 @@ const endpoints = {
                 name: 'count',
                 type: 'Integer',
                 required: false,
-                description: 'Number of match count each page, it must `1` to `50`. (default: `10`)'
+                description: 'Number of match count each page, it must `1` to `50`. (default: `20`)'
             },
             {
                 name: 'type',
@@ -328,13 +328,19 @@ const endpoints = {
                 name: 'count',
                 type: 'Integer',
                 required: false,
-                description: 'Number of match count each page, it must `1` to `50`. (default: `10`)'
+                description: 'Number of match count each page, it must `1` to `50`. (default: `20`)'
             },
             {
                 name: 'type',
                 type: 'MatchType?',
                 required: false,
                 description: 'Only returns match list of the selected match type. (default: `null`)'
+            },
+            {
+                name: 'tag',
+                type: 'String',
+                required: false,
+                description: 'Specific tag of match'
             },
             {
                 name: 'season',

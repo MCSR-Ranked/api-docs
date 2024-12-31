@@ -375,6 +375,11 @@
                       <td>Elo rate of player, if match has placements it will be <code>null</code></td>
                     </tr>
                     <tr>
+                      <td>tag</td>
+                      <td><code>String?</code></td>
+                      <td>Special tag of this match. It's used by get matches with tag</td>
+                    </tr>
+                    <tr>
                       <td>seedType</td>
                       <td><code>String?</code></td>
                       <td>Overworld seed type of this match's seed</td>
@@ -388,6 +393,11 @@
                       <td>completions[].uuid</td>
                       <td><code>String</code></td>
                       <td>(Advanced) Player uuid of completion</td>
+                    </tr>
+                    <tr>
+                      <td>replayExist</td>
+                      <td><code>Boolean</code></td>
+                      <td>(Advanced) Whether match replay is exist in the server</td>
                     </tr>
                     <tr>
                       <td>completions[].time</td>
@@ -406,7 +416,7 @@
                     </tr>
                     <tr>
                       <td>timelines[].type</td>
-                      <td><code>Time</code></td>
+                      <td><code>String</code></td>
                       <td>(Advanced) Identifier of timeline</td>
                     </tr>
                   </tbody>
