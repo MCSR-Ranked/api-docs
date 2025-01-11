@@ -422,7 +422,7 @@ const endpoints = {
                 description: 'Final Elo rank of player in target season'
             },
             {
-                name: 'users[].seasonResult.eloRank',
+                name: 'users[].seasonResult.phasePoint',
                 type: 'Integer',
                 description: 'Final phase points of player in target season'
             }
