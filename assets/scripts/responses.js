@@ -50,6 +50,11 @@ const endpoints = {
                 description: 'rank of current season'
             },
             {
+                name: 'country',
+                type: 'String?',
+                description: 'country code with lowercased ISO 3166-1 alpha-2 format'
+            },
+            {
                 name: 'achievements.display',
                 type: 'Achievement[]',
                 description: 'A list of achievements to be displayed ingame'
@@ -395,6 +400,12 @@ const endpoints = {
                 type: 'Integer',
                 required: false,
                 description: 'Specific season (default: current season number)'
+            },
+            {
+                name: 'country',
+                type: 'String',
+                required: false,
+                description: 'Specific country code with lowercased ISO 3166-1 alpha-2 format'
             }
         ],
         structures: [
@@ -440,6 +451,12 @@ const endpoints = {
                 type: 'Integer',
                 required: false,
                 description: 'Specific season (default: current season number)'
+            },
+            {
+                name: 'country',
+                type: 'String',
+                required: false,
+                description: 'Specific country code with lowercased ISO 3166-1 alpha-2 format'
             }
         ],
         structures: [

@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.min.css">
   <!-- <link rel="stylesheet" href="assets/vendor/font-awesome/css/font-awesome.min.css"> -->
   <link rel="stylesheet" href="assets/vendor/linearicons/style.css">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
   <!-- MAIN CSS -->
   <link rel="stylesheet" href="assets/css/main.css">
   <!-- GOOGLE FONTS -->
@@ -42,6 +42,9 @@
             <img src="assets/img/icon_x256.png" width="250px" height="250px">
           </div>
           <ul class="nav">
+            <li>
+              <a href="#endpoint" class=""><i class="fa fa-paper-plane"></i>Endpoints</a>
+            </li>
             <li>
               <a href="#responses-structure" data-toggle="collapse" class="collapsed"><i class="fa fa-book"></i><span>Basic Responses</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
               <div id="responses-structure" class="collapse">
@@ -99,6 +102,21 @@
       <div class="main-content">
         <h1><strong>MCSR Ranked Rest API Document</strong></h1>
         <div class="alert alert-danger">All endpoints have a ratelimit of 500 requests per 10 minutes unless otherwise specified.<br>If you want to use API Key with expanded ratelimit, please make a #ticket in our <a href="https://mcsrranked.com/discord" target="_blank">Discord Server</a></div>
+        <hr />
+        <div class="container-fluid" id="endpoint">
+          <h2 class="page-title"><strong>Endpoints</strong></h2>
+          <div class="row">
+            <div class="panel">
+              <div class="panel-heading">
+                <pre>https://api.mcsrranked.com/</pre>
+                <pre>https://mcsrranked.com/api/</pre>
+              </div>
+              <div class="panel-body">
+                You can use both, but we would recommend to use first one.
+              </div>
+            </div>
+          </div>
+        </div>
         <hr />
         <div class="container-fluid" id="response-200">
           <h2 class="page-title"><strong><span class="label label-success">200</span> &nbsp; Success Response</strong></h2>
@@ -231,6 +249,11 @@
                       <td><code>Integer?</code></td>
                       <td>User's Elo rank</td>
                     </tr>
+                    <tr>
+                      <td>country</td>
+                      <td><code>String?</code></td>
+                      <td>User's country code. It's lowercased <a href="https://en.wikipedia.org/wiki/ISO_3166-1" target="_blank">ISO 3166-1 alpha-2</a> format</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -330,6 +353,26 @@
                       <td></td>
                     </tr>
                     <tr>
+                      <td>seed.id</td>
+                      <td><code>String?</code></td>
+                      <td>Seed id if it's ranked filtered seed. it's not real seed number of the seed. it will be `null` if seed is not filtered.</td>
+                    </tr>
+                    <tr>
+                      <td>seed.overworld</td>
+                      <td><code>String?</code></td>
+                      <td>Overworld structure type of the seed. it will be `null` if seed is not filtered.</td>
+                    </tr>
+                    <tr>
+                      <td>seed.bastion</td>
+                      <td><code>String?</code></td>
+                      <td>Bastion remnants type of the seed. it will be `null` if seed is not filtered.</td>
+                    </tr>
+                    <tr>
+                      <td>seed.variations</td>
+                      <td><code>String[]</code></td>
+                      <td>Noticable variations of the seed. it will be empty array if seed is not filtered.</td>
+                    </tr>
+                    <tr>
                       <td>result.uuid</td>
                       <td><code>String?</code></td>
                       <td>Winner's UUID, It will be `null` If match has draw</td>
@@ -378,16 +421,6 @@
                       <td>tag</td>
                       <td><code>String?</code></td>
                       <td>Special tag of this match. It's used by get matches with tag</td>
-                    </tr>
-                    <tr>
-                      <td>seedType</td>
-                      <td><code>String?</code></td>
-                      <td>Overworld seed type of this match's seed</td>
-                    </tr>
-                    <tr>
-                      <td>bastionType</td>
-                      <td><code>String?</code></td>
-                      <td>Bastion in nether (as intended) type of this match's seed</td>
                     </tr>
                     <tr>
                       <td>completions[].uuid</td>
