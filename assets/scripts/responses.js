@@ -317,6 +317,96 @@ const endpoints = {
         ],
         sample: `{"status":"success","data":[{"id":581743,"type":2,"season":3,"category":"ANY","date":1698165617,"players":[{"uuid":"7665f76f431b41c6b321bea16aff913b","nickname":"lowk3y_","roleType":0,"eloRate":2027,"eloRank":2},{"uuid":"af22aaab9ee74596a3578bd6345d25b5","nickname":"Priffin","roleType":0,"eloRate":1637,"eloRank":44}],"spectators":[],"result":{"uuid":"af22aaab9ee74596a3578bd6345d25b5","time":643074},"forfeited":false,"decayed":false,"rank":{"season":649,"allTime":1904},"changes":[{"uuid":"af22aaab9ee74596a3578bd6345d25b5","change":20,"eloRate":1898},{"uuid":"7665f76f431b41c6b321bea16aff913b","change":-20,"eloRate":1900}],"seedType":"buried_treasure"}]}`,
     },
+    'users/{identifier}/seasons': {
+        title: `Get User All of Season Results Data`,
+        method: 'GET',
+        category: 'users',
+        description: 'Returns the `{identifier}`\'s entire profile data.',
+        params: [
+            {
+                name: '{identifier}',
+                type: 'UserIdentifier',
+                required: true,
+                description: 'Check the `Objects#UserIdentifier` section.'
+            }
+        ],
+        structures: [
+            {
+                name: 'uuid',
+                type: 'String',
+                description: 'UUID (without Dashes)'
+            },
+            {
+                name: 'nickname',
+                type: 'String'
+            },
+            {
+                name: 'roleType',
+                type: 'Integer'
+            },
+            {
+                name: 'eloRate',
+                type: 'Integer?',
+                description: 'Elo rate of current season, If user haven\'t finished placement matches it will be `null`'
+            },
+            {
+                name: 'eloRank',
+                type: 'Integer?',
+                description: 'rank of current season'
+            },
+            {
+                name: 'country',
+                type: 'String?',
+                description: 'country code with lowercased ISO 3166-1 alpha-2 format'
+            },
+            {
+                name: 'seasonResults.{season}.last.eloRate',
+                type: 'Integer',
+                description: 'Last Elo rate of season'
+            },
+            {
+                name: 'seasonResults.{season}.last.eloRank',
+                type: 'Integer?',
+                description: 'Last Elo rank of season'
+            },
+            {
+                name: 'seasonResults.{season}.last.phasePoint',
+                type: 'Integer',
+                description: 'Last phase points of season'
+            },
+            {
+                name: 'seasonResults.{season}.highest',
+                type: 'Integer',
+                description: 'Highest Elo rate of season'
+            },
+            {
+                name: 'seasonResults.{season}.lowest',
+                type: 'Integer',
+                description: 'Lowest Elo rate of season'
+            },
+            {
+                name: 'seasonResults.{season}.phases[].phase',
+                type: 'Integer',
+                description: 'Phase number'
+            },
+            {
+                name: 'seasonResults.{season}.phases[].eloRate',
+                type: 'Integer',
+                description: 'Elo rate at phase ended'
+            },
+            {
+                name: 'seasonResults.{season}.phases[].eloRank',
+                type: 'Integer',
+                description: 'Elo rank at phase ended'
+            },
+            {
+                name: 'seasonResults.{season}.phases[].point',
+                type: 'Integer',
+                description: 'Phase reword point'
+            }
+        ],
+        sample: `{"status":"success","data":{"uuid":"9a8e24df4c8549d696a6951da84fa5c4","nickname":"Feinberg","roleType":3,"eloRate":2047,"eloRank":5,"country":"us","seasonResults":{"6":{"last":{"eloRate":2276,"eloRank":8,"phasePoint":125},"highest":2291,"lowest":2276,"phases":[{"phase":2,"eloRate":2089,"eloRank":6,"point":30},{"phase":3,"eloRate":2248,"eloRank":4,"point":50},{"phase":4,"eloRate":2276,"eloRank":8,"point":45}]},"7":{"last":{"eloRate":2047,"eloRank":5,"phasePoint":20},"highest":2110,"lowest":1539,"phases":[{"phase":1,"eloRate":1871,"eloRank":9,"point":20}]}}}}`,
+    },
     'matches/': {
         title: `Get Recent Matches`,
         method: 'GET',
