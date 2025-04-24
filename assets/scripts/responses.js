@@ -185,16 +185,22 @@ const endpoints = {
                 description: 'Check the `Objects#UserIdentifier` section.'
             },
             {
-                name: 'page',
+                name: 'before',
                 type: 'Integer',
                 required: false,
-                description: 'Pagination of match list, it must be `0` to `99`. (default: `0`)'
+                description: 'Cursor of match list, it must be match ID. get matches before than ID.'
+            },
+            {
+                name: 'after',
+                type: 'Integer',
+                required: false,
+                description: 'Cursor of match list, it must be match ID. get matches after than ID.'
             },
             {
                 name: 'count',
                 type: 'Integer',
                 required: false,
-                description: 'Number of match count each page, it must `1` to `50`. (default: `20`)'
+                description: 'Number of match count each page, it must `1` to `100`. (default: `20`)'
             },
             {
                 name: 'type',
@@ -285,16 +291,22 @@ const endpoints = {
                 description: 'Check the `Objects#UserIdentifier` section.'
             },
             {
-                name: 'page',
+                name: 'before',
                 type: 'Integer',
                 required: false,
-                description: 'Pagination of match list, it must be `0` to `99`. (default: `0`)'
+                description: 'Cursor of match list, it must be match ID. get matches before than ID.'
+            },
+            {
+                name: 'after',
+                type: 'Integer',
+                required: false,
+                description: 'Cursor of match list, it must be match ID. get matches after than ID.'
             },
             {
                 name: 'count',
                 type: 'Integer',
                 required: false,
-                description: 'Number of match count each page, it must `1` to `50`. (default: `10`)'
+                description: 'Number of match count each page, it must `1` to `100`. (default: `20`)'
             },
             {
                 name: 'type',
@@ -414,16 +426,22 @@ const endpoints = {
         description: 'Returns the recent matches.',
         params: [
             {
-                name: 'page',
+                name: 'before',
                 type: 'Integer',
                 required: false,
-                description: 'Pagination of match list, it must be `0` to `99`. (default: `0`)'
+                description: 'Cursor of match list, it must be match ID. get matches before than ID.'
+            },
+            {
+                name: 'after',
+                type: 'Integer',
+                required: false,
+                description: 'Cursor of match list, it must be match ID. get matches after than ID.'
             },
             {
                 name: 'count',
                 type: 'Integer',
                 required: false,
-                description: 'Number of match count each page, it must `1` to `50`. (default: `20`)'
+                description: 'Number of match count each page, it must `1` to `100`. (default: `20`)'
             },
             {
                 name: 'type',
