@@ -197,6 +197,12 @@ const endpoints = {
                 description: 'Cursor of match list, it must be match ID. get matches after than ID.'
             },
             {
+                name: 'sort',
+                type: 'String',
+                required: false,
+                description: 'Match list sort option. it must be one of these values: `newest`, `oldest`, `fastest`, `slowest` (default: `newest`)'
+            },
+            {
                 name: 'count',
                 type: 'Integer',
                 required: false,
@@ -497,6 +503,45 @@ const endpoints = {
         ],
         sample: `{"status":"success","data":{"id":590105,"type":2,"season":3,"category":"ANY","date":1698623666,"players":[{"uuid":"4427794ee7ad48bc9b53c156fa4092e1","nickname":"kW1st","roleType":1,"eloRate":1834,"eloRank":12},{"uuid":"b903905bc08f4366a551e957ca4dcd78","nickname":"inlifeiminlove","roleType":0,"eloRate":1830,"eloRank":13}],"spectators":[],"result":{"uuid":"4427794ee7ad48bc9b53c156fa4092e1","time":809939},"forfeited":false,"decayed":false,"rank":{"season":4507,"allTime":null},"changes":[{"uuid":"4427794ee7ad48bc9b53c156fa4092e1","change":16,"eloRate":1849},{"uuid":"b903905bc08f4366a551e957ca4dcd78","change":-16,"eloRate":1750}],"completions":[{"uuid":"4427794ee7ad48bc9b53c156fa4092e1","time":809939}],"timelines":[{"uuid":"b903905bc08f4366a551e957ca4dcd78","time":8297,"type":"story.form_obsidian"},{"uuid":"b903905bc08f4366a551e957ca4dcd78","time":8297,"type":"story.obtain_armor"},{"uuid":"b903905bc08f4366a551e957ca4dcd78","time":8269,"type":"story.iron_tools"}],"seedType":"village"}}`
     },
+    'live/': {
+        title: `Get Online Players & Live Stream Matches`,
+        method: 'GET',
+        category: 'live',
+        description: 'Returns the online players count and live matches with public streams.',
+        params: [],
+        structures: [
+            {
+                name: 'players',
+                type: 'Integer',
+                description: 'Concurrent players count who connected to MCSR Ranked server'
+            },
+            {
+                name: 'liveMatches[].currentTime',
+                type: 'Time',
+            },
+            {
+                name: 'liveMatches[].players',
+                type: 'UserProfile[]',
+                description: 'Only players with public stream activated will be included.'
+            },
+            {
+                name: 'liveMatches[].data.{UUID}.liveUrl',
+                type: 'String?',
+                description: 'Live stream url of player. it\'s `null` if player hasn\'t activated public stream.'
+            },
+            {
+                name: 'liveMatches[].data.{UUID}.timeline.time',
+                type: 'Time',
+                description: 'Match time of last player split update.'
+            },
+            {
+                name: 'liveMatches[].data.{UUID}.timeline.type',
+                type: 'String',
+                description: 'Timeline idenfitier of last player split update.'
+            }
+        ],
+        sample: `{}`,
+    },
     'leaderboard': {
         title: `Get Elo Leaderboard`,
         method: 'GET',
@@ -518,9 +563,14 @@ const endpoints = {
         ],
         structures: [
             {
+                name: 'season.startsAt',
+                type: 'Date',
+                description: 'Date of season starts.'
+            },
+            {
                 name: 'season.endsAt',
-                type: 'Date?',
-                description: 'Date of season ends. If target season is not current season it will be `null`'
+                type: 'Date',
+                description: 'Date of season ends.'
             },
             {
                 name: 'season.number',
@@ -565,6 +615,12 @@ const endpoints = {
                 type: 'String',
                 required: false,
                 description: 'Specific country code with lowercased ISO 3166-1 alpha-2 format'
+            },
+            {
+                name: 'predicted',
+                type: 'Any',
+                required: false,
+                description: 'Get predicted phase points leaderboard. only works with current season'
             }
         ],
         structures: [
@@ -597,9 +653,14 @@ const endpoints = {
                 description: 'Final Elo rank of player in target season'
             },
             {
-                name: 'users[].seasonResult.eloRank',
+                name: 'users[].seasonResult.phasePoint',
                 type: 'Integer',
                 description: 'Final phase points of player in target season'
+            },
+            {
+                name: 'users[].predPhasePoint',
+                type: 'Integer',
+                description: 'Predicted phase points of player for next phase. It will be same value with `users[].seasonResult.phasePoint` if response is an past season.'
             }
         ],
         sample: `{"status":"success","data":{"phase":{"endsAt":1709769600,"number":2,"season":4},"users":[{"uuid":"7665f76f431b41c6b321bea16aff913b","nickname":"lowk3y_","roleType":0,"eloRate":1966,"eloRank":4,"seasonResult":{"eloRate":1966,"eloRank":4,"phasePoint":50}},{"uuid":"3c8757790ab0400b8b9e3936e0dd535b","nickname":"doogile","roleType":3,"eloRate":2175,"eloRank":1,"seasonResult":{"eloRate":2175,"eloRank":1,"phasePoint":40}},{"uuid":"70eb9286e3e24153a8b37c8f884f1292","nickname":"7rowl","roleType":0,"eloRate":1969,"eloRank":3,"seasonResult":{"eloRate":1969,"eloRank":3,"phasePoint":35}},{"uuid":"562a308be86c4ec09438387860e792cc","nickname":"Oxidiot","roleType":0,"eloRate":1942,"eloRank":8,"seasonResult":{"eloRate":1942,"eloRank":8,"phasePoint":30}},{"uuid":"17e787d1d6374f818b294f2319db370d","nickname":"silverrruns","roleType":0,"eloRate":2002,"eloRank":2,"seasonResult":{"eloRate":2002,"eloRank":2,"phasePoint":25}},{"uuid":"af22aaab9ee74596a3578bd6345d25b5","nickname":"Priffin","roleType":0,"eloRate":1955,"eloRank":5,"seasonResult":{"eloRate":1955,"eloRank":5,"phasePoint":25}},{"uuid":"fa61606e8131484c8dee506d1ff9a8dc","nickname":"AutomattPL","roleType":3,"eloRate":1947,"eloRank":6,"seasonResult":{"eloRate":1947,"eloRank":6,"phasePoint":25}},{"uuid":"aa0aee82f7a94591a076331d899f836c","nickname":"sacanagem_online","roleType":0,"eloRate":1439,"eloRank":150,"seasonResult":{"eloRate":1439,"eloRank":150,"phasePoint":5}},{"uuid":"5a2cb29136eb46529adc03aa4583a2d2","nickname":"GradientGray","roleType":0,"eloRate":1412,"eloRank":180,"seasonResult":{"eloRate":1412,"eloRank":180,"phasePoint":5}},{"uuid":"745a819973974fe1bb1608e57fd439b6","nickname":"centuriee","roleType":0,"eloRate":1412,"eloRank":180,"seasonResult":{"eloRate":1412,"eloRank":180,"phasePoint":5}},{"uuid":"4c3bc64c9f0a4cd988cad7703d80379e","nickname":"ColeTM","roleType":0,"eloRate":1392,"eloRank":209,"seasonResult":{"eloRate":1392,"eloRank":209,"phasePoint":5}}]}}`
@@ -648,6 +709,10 @@ const endpoints = {
             {
                 name: '[].user',
                 type: 'UserProfile'
+            },
+            {
+                name: '[].seed',
+                type: 'MatchSeed'
             }
         ],
         sample: `{"status":"success","data":[{"rank":1,"season":1,"date":1685157577,"id":284288,"time":433388,"user":{"uuid":"08476f5847fc4daeba74a2544fc9d65b","nickname":"Zylenox","roleType":0,"eloRate":1523,"eloRank":90}},{"rank":2,"season":1,"date":1685696875,"id":300983,"time":457763,"user":{"uuid":"17e787d1d6374f818b294f2319db370d","nickname":"silverrruns","roleType":0,"eloRate":1818,"eloRank":15}}]}`
