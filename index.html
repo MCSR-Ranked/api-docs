@@ -63,6 +63,7 @@
                   <li><a href="#objects-userprofile" class=""><span class="label label-success">Class</span> &nbsp; UserProfile</a></li>
                   <li><a href="#objects-achievement" class=""><span class="label label-success">Class</span> &nbsp; Achievement</a></li>
                   <li><a href="#objects-matchinfo" class=""><span class="label label-success">Class</span> &nbsp; MatchInfo</a></li>
+                  <li><a href="#objects-matchseed" class=""><span class="label label-success">Class</span> &nbsp; MatchSeed</a></li>
                   <li><a href="#objects-useridentifier" class=""><span class="label label-primary">String</span> &nbsp; UserIdentifier</a></li>
                   <li><a href="#objects-matchtype" class=""><span class="label label-primary">Integer</span> &nbsp; MatchType</a></li>
                   <li><a href="#objects-date" class=""><span class="label label-primary">Integer</span> &nbsp; Date</a></li>
@@ -81,6 +82,10 @@
             <li>
               <a href="#responses-api-matches" data-toggle="collapse" class="collapsed"><i class="fa fa-tasks"></i><span>Matches</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
               <div id="responses-api-matches" class="collapse"><ul class="nav"></ul></div>
+            </li>
+            <li>
+              <a href="#responses-api-live" data-toggle="collapse" class="collapsed"><i class="fa fa-broadcast-tower"></i><span>Live</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+              <div id="responses-api-live" class="collapse"><ul class="nav"></ul></div>
             </li>
             <li>
               <a href="#responses-api-leaderboards" data-toggle="collapse" class="collapsed"><i class="fa fa-list-ol"></i><span>Leaderboards</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
@@ -353,29 +358,9 @@
                       <td></td>
                     </tr>
                     <tr>
-                      <td>seed.id</td>
-                      <td><code>String?</code></td>
-                      <td>Seed id if it's ranked filtered seed. it's not real seed number of the seed. it will be <code>null</code> if seed is not filtered.</td>
-                    </tr>
-                    <tr>
-                      <td>seed.overworld</td>
-                      <td><code>String?</code></td>
-                      <td>Overworld structure type of the seed. it will be <code>null</code> if seed is not filtered.</td>
-                    </tr>
-                    <tr>
-                      <td>seed.bastion</td>
-                      <td><code>String?</code></td>
-                      <td>Bastion remnants type of the seed. it will be <code>null</code> if seed is not filtered.</td>
-                    </tr>
-                    <tr>
-                      <td>seed.endTowers</td>
-                      <td><code>Integer[]</code></td>
-                      <td>The <a href="./assets/img/endTowers.png" target="_blank">zero related tower</a> heights of in The End dimension. it will be empty array if seed is not filtered.</td>
-                    </tr>
-                    <tr>
-                      <td>seed.variations</td>
-                      <td><code>String[]</code></td>
-                      <td>Noticable variations of the seed. it will be empty array if seed is not filtered.</td>
+                      <td>seed</td>
+                      <td><code>MatchSeed?</code></td>
+                      <td>Seed id if it's ranked filtered seed. it's not real seed number of the seed. it will be <code>null</code> if it's decayed match.</td>
                     </tr>
                     <tr>
                       <td>result.uuid</td>
@@ -428,6 +413,21 @@
                       <td>Special tag of this match. It's used by get matches with tag</td>
                     </tr>
                     <tr>
+                      <td>vod[].uuid</td>
+                      <td><code>String</code></td>
+                      <td>UUID of vod owner. Only players with public stream activated will be included.</td>
+                    </tr>
+                    <tr>
+                      <td>vod[].url</td>
+                      <td><code>String</code></td>
+                      <td>VOD url of this match with vod owner</td>
+                    </tr>
+                    <tr>
+                      <td>vod[].startsAt</td>
+                      <td><code>Date</code></td>
+                      <td>VOD start date. you can get a timestamp with <code>{date} - {vod[].startsAt}</code></td>
+                    </tr>
+                    <tr>
                       <td>completions[].uuid</td>
                       <td><code>String</code></td>
                       <td>(Advanced) Player uuid of completion</td>
@@ -456,6 +456,52 @@
                       <td>timelines[].type</td>
                       <td><code>String</code></td>
                       <td>(Advanced) Identifier of timeline</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <div class="container-fluid" id="objects-matchseed">
+          <h2 class="page-title"><strong><span class="label label-success">Class</span> &nbsp; MatchSeed</strong></h2>
+          <div class="row">
+            <div class="panel">
+              <div class="panel-body">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Parameter</th>
+                      <th>Type</th>
+                      <th>Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>id</td>
+                      <td><code>String?</code></td>
+                      <td>Seed id if it's ranked filtered seed. it's not real seed number of the seed. it will be <code>null</code> if seed is not filtered.</td>
+                    </tr>
+                    <tr>
+                      <td>overworld</td>
+                      <td><code>String?</code></td>
+                      <td>Overworld structure type of the seed. it will be <code>null</code> if seed is not filtered.</td>
+                    </tr>
+                    <tr>
+                      <td>bastion</td>
+                      <td><code>String?</code></td>
+                      <td>Bastion remnants type of the seed. it will be <code>null</code> if seed is not filtered.</td>
+                    </tr>
+                    <tr>
+                      <td>endTowers</td>
+                      <td><code>Integer[]</code></td>
+                      <td>The <a href="./assets/img/endTowers.png" target="_blank">zero related tower</a> heights of in The End dimension. it will be empty array if seed is not filtered.</td>
+                    </tr>
+                    <tr>
+                      <td>variations</td>
+                      <td><code>String[]</code></td>
+                      <td>Noticable variations of the seed. it will be empty array if seed is not filtered.</td>
                     </tr>
                   </tbody>
                 </table>
