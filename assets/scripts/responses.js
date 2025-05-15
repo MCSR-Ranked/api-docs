@@ -823,7 +823,7 @@ function getSampleResponse(url, id) {
             }
         }
 
-        $(`#${id}`).html(`<pre>${JSON.stringify(limitArraysToFive(json), null, 4)}</pre>`);
+        $(`#${id}`).html(`<pre>${JSON.stringify(limitArraysToFive(json), null, 4)}</pre><a href="${url}" target="_blank">Show Full Response</a>`);
     })
 }
 
