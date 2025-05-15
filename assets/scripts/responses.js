@@ -507,7 +507,7 @@ const endpoints = {
         title: `Get Online Players & Live Stream Matches`,
         method: 'GET',
         category: 'live',
-        description: 'Returns the online players count and live matches with public streams.',
+        description: 'Returns the online players count and live matches with public streams.<br>You can activate public stream by follow this steps: <ol><li>Link Twitch account with MCSR Ranked profile.</li><li>Make Twitch to public on MCSR Ranked profile.</li><li>Set "Public Stream" option in MCSR Ranked Settings.</li><li>Start your streaming on Twitch.</li></ol>',
         params: [],
         structures: [
             {
