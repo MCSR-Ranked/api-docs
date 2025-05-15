@@ -170,7 +170,7 @@ const endpoints = {
                 description: 'Rank in the weekly race'
             },
         ],
-        sample: `{"status":"success","data":{"uuid":"7665f76f431b41c6b321bea16aff913b","nickname":"lowk3y_","roleType":0,"eloRate":1966,"eloRank":4,"achievements":{"display":[{"id":"playoffsResult","date":1696807856,"data":["2"],"level":1},{"id":"seasonResult","date":1695081661,"data":["2","1"],"level":1},{"id":"bestTime","date":1706794941,"data":[],"level":11}],"total":[{"id":"highestWinStreak","date":1706794941,"data":[],"level":6,"goal":20},{"id":"playedMatches","date":1706794941,"data":[],"level":10,"goal":5000},{"id":"playtime","date":1706794941,"data":[],"level":8,"goal":3600000000},{"id":"wins","date":1706794941,"data":[],"level":9,"goal":2000},{"id":"seasonResult","date":1704499267,"data":["3","3"],"level":2},{"id":"seasonResult","date":1686787247,"data":["1","8"],"level":3}]},"timestamp":{"firstOnline":1676490707,"lastOnline":1707732310,"lastRanked":1707739886},"statistics":{"season":{"bestTime":{"ranked":495485,"casual":503736},"highestWinStreak":{"ranked":12,"casual":2},"currentWinStreak":{"ranked":0,"casual":1},"playedMatches":{"ranked":198,"casual":11},"playtime":{"ranked":128755994,"casual":6621089},"forfeits":{"ranked":1,"casual":0},"completions":{"ranked":112,"casual":2},"wins":{"ranked":135,"casual":4},"loses":{"ranked":53,"casual":4}},"total":{"bestTime":{"ranked":380341,"casual":489962},"highestWinStreak":{"ranked":18,"casual":3},"currentWinStreak":{"ranked":0,"casual":1},"playedMatches":{"ranked":2864,"casual":46},"playtime":{"ranked":1933913181,"casual":14962658},"forfeits":{"ranked":171,"casual":13},"completions":{"ranked":1345,"casual":8},"wins":{"ranked":1809,"casual":17},"loses":{"ranked":959,"casual":19}}},"connections":{"discord":{"id":"1037457184952434819","name":"lowkey#0996"},"youtube":{"id":"UC_HX7WdiAWRZgcG7aOYtCNg","name":"lowkey"},"twitch":{"id":"0lowkey","name":"0lowkey"}},"seasonResult":{"last":{"eloRate":1966,"eloRank":4,"phasePoint":50},"highest":2126,"lowest":1941,"phases":[{"phase":1,"eloRate":2126,"eloRank":1,"point":50}]},"weeklyRaces":[{"id":1,"time":489237,"rank":8}]}}`,
+        sampleUrl: `https://api.mcsrranked.com/users/3c8757790ab0400b8b9e3936e0dd535b`
     },
     'users/{identifier}/matches': {
         title: `Get User Matches`,
@@ -233,7 +233,7 @@ const endpoints = {
                 type: 'MatchInfo[]'
             }
         ],
-        sample: `{"status":"success","data":[{"id":534065,"type":2,"season":3,"category":"ANY","date":1695836921,"players":[{"uuid":"7e697c9f25e74b3c9f7a7c51797987c4","nickname":"not_tomorrow_yet","roleType":0,"eloRate":1121,"eloRank":570,"__v":0},{"uuid":"bbc886da1b024739b4b80f1542e9f61d","nickname":"RED_LIME","roleType":3,"eloRate":null,"eloRank":null,"__v":0}],"spectators":[],"result":{"uuid":"7e697c9f25e74b3c9f7a7c51797987c4","time":268613},"forfeited":false,"decayed":false,"rank":{"season":null,"allTime":null},"changes":[{"uuid":"7e697c9f25e74b3c9f7a7c51797987c4","change":17,"eloRate":1234},{"uuid":"bbc886da1b024739b4b80f1542e9f61d","change":null,"eloRate":null}],"seedType":"shipwreck"}]}`,
+        sampleUrl: `https://api.mcsrranked.com/users/3c8757790ab0400b8b9e3936e0dd535b/matches`
     },
     'users/{identifier1}/versus/{identifier2}': {
         title: `Get Versus Stats`,
@@ -276,7 +276,7 @@ const endpoints = {
                 description: 'Total Elo rate changes in a match between both players'
             },
         ],
-        sample: `{"status":"success","data":{"players":[{"uuid":"a0c06d33c69941d09b22e0c98c4233fd","nickname":"jamyreaf","roleType":0,"eloRate":1637,"eloRank":44},{"uuid":"af22aaab9ee74596a3578bd6345d25b5","nickname":"Priffin","roleType":0,"eloRate":1637,"eloRank":44}],"results":{"ranked":{"total":3,"a0c06d33c69941d09b22e0c98c4233fd":2,"af22aaab9ee74596a3578bd6345d25b5":1},"casual":{"total":0,"a0c06d33c69941d09b22e0c98c4233fd":0,"af22aaab9ee74596a3578bd6345d25b5":0}},"changes":{"a0c06d33c69941d09b22e0c98c4233fd":33,"af22aaab9ee74596a3578bd6345d25b5":-33}}}`,
+        sampleUrl: `https://api.mcsrranked.com/users/3c8757790ab0400b8b9e3936e0dd535b/versus/17e787d1d6374f818b294f2319db370d?season=7`
     },
     'users/{identifier1}/versus/{identifier2}/matches': {
         title: `Get Versus Matches`,
@@ -333,7 +333,7 @@ const endpoints = {
                 type: 'MatchInfo[]'
             }
         ],
-        sample: `{"status":"success","data":[{"id":581743,"type":2,"season":3,"category":"ANY","date":1698165617,"players":[{"uuid":"7665f76f431b41c6b321bea16aff913b","nickname":"lowk3y_","roleType":0,"eloRate":2027,"eloRank":2},{"uuid":"af22aaab9ee74596a3578bd6345d25b5","nickname":"Priffin","roleType":0,"eloRate":1637,"eloRank":44}],"spectators":[],"result":{"uuid":"af22aaab9ee74596a3578bd6345d25b5","time":643074},"forfeited":false,"decayed":false,"rank":{"season":649,"allTime":1904},"changes":[{"uuid":"af22aaab9ee74596a3578bd6345d25b5","change":20,"eloRate":1898},{"uuid":"7665f76f431b41c6b321bea16aff913b","change":-20,"eloRate":1900}],"seedType":"buried_treasure"}]}`,
+        sampleUrl: `https://api.mcsrranked.com/users/3c8757790ab0400b8b9e3936e0dd535b/versus/17e787d1d6374f818b294f2319db370d/matches?season=7`
     },
     'users/{identifier}/seasons': {
         title: `Get User All of Season Results Data`,
@@ -423,7 +423,7 @@ const endpoints = {
                 description: 'Phase reword point'
             }
         ],
-        sample: `{"status":"success","data":{"uuid":"9a8e24df4c8549d696a6951da84fa5c4","nickname":"Feinberg","roleType":3,"eloRate":2047,"eloRank":5,"country":"us","seasonResults":{"6":{"last":{"eloRate":2276,"eloRank":8,"phasePoint":125},"highest":2291,"lowest":2276,"phases":[{"phase":2,"eloRate":2089,"eloRank":6,"point":30},{"phase":3,"eloRate":2248,"eloRank":4,"point":50},{"phase":4,"eloRate":2276,"eloRank":8,"point":45}]},"7":{"last":{"eloRate":2047,"eloRank":5,"phasePoint":20},"highest":2110,"lowest":1539,"phases":[{"phase":1,"eloRate":1871,"eloRank":9,"point":20}]}}}}`,
+        sampleUrl: `https://api.mcsrranked.com/users/3c8757790ab0400b8b9e3936e0dd535b/seasons`
     },
     'matches/': {
         title: `Get Recent Matches`,
@@ -480,7 +480,7 @@ const endpoints = {
                 type: 'MatchInfo[]'
             }
         ],
-        sample: `{"status":"success","data":[{"id":519261,"type":2,"season":2,"category":"ANY","date":1695081655,"players":[{"uuid":"0c302ac113da46deb653c0e7225a8355","nickname":"Nadoms","roleType":0,"eloRate":1266,"eloRank":320},{"uuid":"c569bf473f5d43eba599e56ec51c050c","nickname":"Burawoy","roleType":0,"eloRate":1166,"eloRank":495,"__v":0}],"spectators":[],"result":{"uuid":null,"time":0},"forfeited":false,"decayed":false,"rank":{"season":null,"allTime":null},"changes":[{"uuid":"c569bf473f5d43eba599e56ec51c050c","change":0,"eloRate":1229},{"uuid":"0c302ac113da46deb653c0e7225a8355","change":0,"eloRate":1264}],"seedType":"buried_treasure"}]}`,
+        sampleUrl: `https://api.mcsrranked.com/matches`,
     },
     'matches/{match_id}': {
         title: `Get Match Info`,
@@ -501,7 +501,7 @@ const endpoints = {
                 type: 'MatchInfo (Advanced)'
             }
         ],
-        sample: `{"status":"success","data":{"id":590105,"type":2,"season":3,"category":"ANY","date":1698623666,"players":[{"uuid":"4427794ee7ad48bc9b53c156fa4092e1","nickname":"kW1st","roleType":1,"eloRate":1834,"eloRank":12},{"uuid":"b903905bc08f4366a551e957ca4dcd78","nickname":"inlifeiminlove","roleType":0,"eloRate":1830,"eloRank":13}],"spectators":[],"result":{"uuid":"4427794ee7ad48bc9b53c156fa4092e1","time":809939},"forfeited":false,"decayed":false,"rank":{"season":4507,"allTime":null},"changes":[{"uuid":"4427794ee7ad48bc9b53c156fa4092e1","change":16,"eloRate":1849},{"uuid":"b903905bc08f4366a551e957ca4dcd78","change":-16,"eloRate":1750}],"completions":[{"uuid":"4427794ee7ad48bc9b53c156fa4092e1","time":809939}],"timelines":[{"uuid":"b903905bc08f4366a551e957ca4dcd78","time":8297,"type":"story.form_obsidian"},{"uuid":"b903905bc08f4366a551e957ca4dcd78","time":8297,"type":"story.obtain_armor"},{"uuid":"b903905bc08f4366a551e957ca4dcd78","time":8269,"type":"story.iron_tools"}],"seedType":"village"}}`
+        sampleUrl: `https://api.mcsrranked.com/matches/2100446`
     },
     'live/': {
         title: `Get Online Players & Live Stream Matches`,
@@ -540,7 +540,7 @@ const endpoints = {
                 description: 'Timeline idenfitier of last player split update.'
             }
         ],
-        sample: `{}`,
+        sampleUrl: `https://api.mcsrranked.com/live`
     },
     'leaderboard': {
         title: `Get Elo Leaderboard`,
@@ -596,7 +596,7 @@ const endpoints = {
                 description: 'Final phase points of player in target season'
             }
         ],
-        sample: `{"status":"success","data":{"season":{"endsAt":1712448000,"number":4},"users":[{"uuid":"3c8757790ab0400b8b9e3936e0dd535b","nickname":"doogile","roleType":3,"eloRate":2175,"eloRank":1,"seasonResult":{"eloRate":2175,"eloRank":1,"phasePoint":40}},{"uuid":"17e787d1d6374f818b294f2319db370d","nickname":"silverrruns","roleType":0,"eloRate":2002,"eloRank":2,"seasonResult":{"eloRate":2002,"eloRank":2,"phasePoint":25}},{"uuid":"70eb9286e3e24153a8b37c8f884f1292","nickname":"7rowl","roleType":0,"eloRate":1969,"eloRank":3,"seasonResult":{"eloRate":1969,"eloRank":3,"phasePoint":35}},{"uuid":"7665f76f431b41c6b321bea16aff913b","nickname":"lowk3y_","roleType":0,"eloRate":1966,"eloRank":4,"seasonResult":{"eloRate":1966,"eloRank":4,"phasePoint":50}},{"uuid":"af22aaab9ee74596a3578bd6345d25b5","nickname":"Priffin","roleType":0,"eloRate":1955,"eloRank":5,"seasonResult":{"eloRate":1955,"eloRank":5,"phasePoint":25}},{"uuid":"a29a2e3d1ed649f8b122de8ddad2668a","nickname":"Jud0zwerg","roleType":0,"eloRate":1446,"eloRank":147,"seasonResult":{"eloRate":1446,"eloRank":147,"phasePoint":0}},{"uuid":"0388b80ebe6c4216b4a8305c0cd27894","nickname":"tommorerow","roleType":1,"eloRate":1445,"eloRank":148,"seasonResult":{"eloRate":1445,"eloRank":148,"phasePoint":5}},{"uuid":"8021b1eb133346c3b0b88d19c5be9188","nickname":"gabboooz","roleType":0,"eloRate":1443,"eloRank":149,"seasonResult":{"eloRate":1443,"eloRank":149,"phasePoint":0}},{"uuid":"aa0aee82f7a94591a076331d899f836c","nickname":"sacanagem_online","roleType":0,"eloRate":1439,"eloRank":150,"seasonResult":{"eloRate":1439,"eloRank":150,"phasePoint":5}},{"uuid":"c7802cb7c30c47aabc1a7ec790ff2260","nickname":"iKme_","roleType":0,"eloRate":1439,"eloRank":150,"seasonResult":{"eloRate":1439,"eloRank":150,"phasePoint":0}}]}}`,
+        sampleUrl: `https://api.mcsrranked.com/leaderboard`
     },
     'phase-leaderboard': {
         title: `Get Season Phase Points Leaderboard`,
@@ -663,7 +663,7 @@ const endpoints = {
                 description: 'Predicted phase points of player for next phase. It will be same value with `users[].seasonResult.phasePoint` if response is an past season.'
             }
         ],
-        sample: `{"status":"success","data":{"phase":{"endsAt":1709769600,"number":2,"season":4},"users":[{"uuid":"7665f76f431b41c6b321bea16aff913b","nickname":"lowk3y_","roleType":0,"eloRate":1966,"eloRank":4,"seasonResult":{"eloRate":1966,"eloRank":4,"phasePoint":50}},{"uuid":"3c8757790ab0400b8b9e3936e0dd535b","nickname":"doogile","roleType":3,"eloRate":2175,"eloRank":1,"seasonResult":{"eloRate":2175,"eloRank":1,"phasePoint":40}},{"uuid":"70eb9286e3e24153a8b37c8f884f1292","nickname":"7rowl","roleType":0,"eloRate":1969,"eloRank":3,"seasonResult":{"eloRate":1969,"eloRank":3,"phasePoint":35}},{"uuid":"562a308be86c4ec09438387860e792cc","nickname":"Oxidiot","roleType":0,"eloRate":1942,"eloRank":8,"seasonResult":{"eloRate":1942,"eloRank":8,"phasePoint":30}},{"uuid":"17e787d1d6374f818b294f2319db370d","nickname":"silverrruns","roleType":0,"eloRate":2002,"eloRank":2,"seasonResult":{"eloRate":2002,"eloRank":2,"phasePoint":25}},{"uuid":"af22aaab9ee74596a3578bd6345d25b5","nickname":"Priffin","roleType":0,"eloRate":1955,"eloRank":5,"seasonResult":{"eloRate":1955,"eloRank":5,"phasePoint":25}},{"uuid":"fa61606e8131484c8dee506d1ff9a8dc","nickname":"AutomattPL","roleType":3,"eloRate":1947,"eloRank":6,"seasonResult":{"eloRate":1947,"eloRank":6,"phasePoint":25}},{"uuid":"aa0aee82f7a94591a076331d899f836c","nickname":"sacanagem_online","roleType":0,"eloRate":1439,"eloRank":150,"seasonResult":{"eloRate":1439,"eloRank":150,"phasePoint":5}},{"uuid":"5a2cb29136eb46529adc03aa4583a2d2","nickname":"GradientGray","roleType":0,"eloRate":1412,"eloRank":180,"seasonResult":{"eloRate":1412,"eloRank":180,"phasePoint":5}},{"uuid":"745a819973974fe1bb1608e57fd439b6","nickname":"centuriee","roleType":0,"eloRate":1412,"eloRank":180,"seasonResult":{"eloRate":1412,"eloRank":180,"phasePoint":5}},{"uuid":"4c3bc64c9f0a4cd988cad7703d80379e","nickname":"ColeTM","roleType":0,"eloRate":1392,"eloRank":209,"seasonResult":{"eloRate":1392,"eloRank":209,"phasePoint":5}}]}}`
+        sampleUrl: `https://api.mcsrranked.com/phase-leaderboard?predicted`
     },
     'record-leaderboard': {
         title: `Get Season Best Time Leaderboard`,
@@ -715,7 +715,7 @@ const endpoints = {
                 type: 'MatchSeed'
             }
         ],
-        sample: `{"status":"success","data":[{"rank":1,"season":1,"date":1685157577,"id":284288,"time":433388,"user":{"uuid":"08476f5847fc4daeba74a2544fc9d65b","nickname":"Zylenox","roleType":0,"eloRate":1523,"eloRank":90}},{"rank":2,"season":1,"date":1685696875,"id":300983,"time":457763,"user":{"uuid":"17e787d1d6374f818b294f2319db370d","nickname":"silverrruns","roleType":0,"eloRate":1818,"eloRank":15}}]}`
+        sampleUrl: `https://api.mcsrranked.com/record-leaderboard`
     },
     'weekly-race/{id?}': {
         title: `Get Weekly Race Leaderboard`,
@@ -772,7 +772,7 @@ const endpoints = {
                 type: 'Boolean'
             }
         ],
-        sample: `{"status":"success","data":{"id":13,"seed":{"overworld":"142605421743383832","nether":"142605421743383832","theEnd":"142605421743383832","rng":"142605421743383832"},"endsAt":1735516800,"leaderboard":[{"rank":1,"player":{"uuid":"4aed1e5e8f5c44e2bc0666e0c03781af","nickname":"nEmerald","roleType":0,"eloRate":1512,"eloRank":92},"time":324323,"replayExist":true},{"rank":2,"player":{"uuid":"92b63a39b36a445fa94c77ae212dcea3","nickname":"bing_pigs","roleType":0,"eloRate":1512,"eloRank":92},"time":345664,"replayExist":true},{"rank":3,"player":{"uuid":"5cd115f0ec1240659db152406c0984a3","nickname":"yjako","roleType":0,"eloRate":1512,"eloRank":92},"time":354563,"replayExist":false}]}}`
+        sampleUrl: `https://api.mcsrranked.com/weekly-race`
     },
 }
 
@@ -806,14 +806,34 @@ function getResponseExample(endpoint) {
     return JSON.parse(responses[endpoint]);
 }
 
+function getSampleResponse(url, id) {
+    $(`#${id}`).html(`<pre>Loading...</pre>`);
+    fetch(url).then(r => r.json()).then(json => {
+        const limitArraysToFive = (obj) => {
+            if (Array.isArray(obj)) {
+                return obj.slice(0, 3).map(limitArraysToFive);
+            } else if (obj !== null && typeof obj === 'object') {
+                const newObj = {};
+                for (const key in obj) {
+                newObj[key] = limitArraysToFive(obj[key]);
+                }
+                return newObj;
+            } else {
+                return obj;
+            }
+        }
+
+        $(`#${id}`).html(`<pre>${JSON.stringify(limitArraysToFive(json), null, 4)}</pre>`);
+    })
+}
+
 function buildEndpointContainer(endpointKey, endpoint) {
-    const defaultContainer = /*html*/ `<div class="container-fluid" id="[[ELEMENT_ID]]"><h2 class="page-title"><strong>[[ENDPOINT_TITLE]]</strong></h2><h4 class="page-title">[[ENDPOINT_DESCRIPTION]]</h4><div class="row"><div class=""><div class="panel"><div class="panel-heading"><h3 class="panel-title"><span class="label label-success">[[ENDPOINT_METHOD]]</span> &nbsp; <code>https://mcsrranked.com/api/[[ENDPOINT_TARGET]]</code></h3></div><div class="panel-body"><table class="table table-hover"><thead><tr><th>Parameter</th><th>Type</th><th>Required?</th><th>Description</th></tr></thead><tbody>[[PARAMS]]</tbody></table></div></div></div><div class=""><div class="panel"><div class="panel-heading pointer" data-toggle="collapse" data-target="#[[ELEMENT_ID]]-type"><h3 class="panel-title">Response Type</h3></div><div class="panel-body collapse" id="[[ELEMENT_ID]]-type"><table class="table table-hover"><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody>[[STRUCTS]]</tbody></table></div></div></div><div class=""><div class="panel"><div class="panel-heading pointer" data-toggle="collapse" data-target="#[[ELEMENT_ID]]-sample"><h3 class="panel-title">Show Sample Response</h3></div><div class="panel-body collapse" id="[[ELEMENT_ID]]-sample"><pre>[[RESPONSE_SAMPLE]]</pre></div></div></div></div></div><hr>`;
+    const defaultContainer = /*html*/ `<div class="container-fluid" id="[[ELEMENT_ID]]"><h2 class="page-title"><strong>[[ENDPOINT_TITLE]]</strong></h2><h4 class="page-title">[[ENDPOINT_DESCRIPTION]]</h4><div class="row"><div class=""><div class="panel"><div class="panel-heading"><h3 class="panel-title"><span class="label label-success">[[ENDPOINT_METHOD]]</span> &nbsp; <code>https://mcsrranked.com/api/[[ENDPOINT_TARGET]]</code></h3></div><div class="panel-body"><table class="table table-hover"><thead><tr><th>Parameter</th><th>Type</th><th>Required?</th><th>Description</th></tr></thead><tbody>[[PARAMS]]</tbody></table></div></div></div><div class=""><div class="panel"><div class="panel-heading pointer" data-toggle="collapse" data-target="#[[ELEMENT_ID]]-type"><h3 class="panel-title">Response Type</h3></div><div class="panel-body collapse" id="[[ELEMENT_ID]]-type"><table class="table table-hover"><thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead><tbody>[[STRUCTS]]</tbody></table></div></div></div><div class=""><div class="panel"><div class="panel-heading pointer" data-toggle="collapse" data-target="#[[ELEMENT_ID]]-sample" onclick="getSampleResponse('[[SAMPLE_URL]]', '[[ELEMENT_ID]]-sample')"><h3 class="panel-title">Show Sample Response</h3></div><div class="panel-body collapse" id="[[ELEMENT_ID]]-sample"></div></div></div></div></div><hr>`;
     const defaultParamRow  = /*html*/ `<tr><td>[[PARAM_NAME]]</td><td><code>[[PARAM_TYPE]]</code></td><td><code>[[PARAM_REQUIRED]]</code></td><td>[[PARAM_DESCRIPTION]]</td></tr>`;
     const defaultStructRow = /*html*/ `<tr><td>[[STRUCT_NAME]]</td><td><code>[[STRUCT_TYPE]]</code></td><td>[[STRUCT_DESCRIPTION]]</td></tr>`;
 
     const codeBlockRegex = /`(.([\s\w{}])*)`/gi;
     const identifier = endpointKey.replaceAll('/', '-').replace(/[^a-zA-Z0-9\-]/g, '');
-    const sampleObject = JSON.parse(endpoint.sample);
 
     return defaultContainer
     .replaceAll('[[ELEMENT_ID]]', identifier)
@@ -827,7 +847,7 @@ function buildEndpointContainer(endpointKey, endpoint) {
         .replaceAll('[[STRUCT_TYPE]]', structure.type)
         .replaceAll('[[STRUCT_DESCRIPTION]]', (structure.description ? structure.description.replace(codeBlockRegex, '<code>$1</code>') : ''))
     }).join(''))
-    .replaceAll('[[RESPONSE_SAMPLE]]', JSON.stringify(sampleObject, null, 4))
+    .replaceAll('[[SAMPLE_URL]]', endpoint.sampleUrl)
     .replaceAll('[[PARAMS]]', endpoint.params.map(param => {
         const isRequired = (value) => param.required ? `<strong>${value}</strong>` : value;
         return defaultParamRow
