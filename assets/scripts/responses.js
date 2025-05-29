@@ -503,7 +503,7 @@ const endpoints = {
                 description: 'Match time of completion'
             },
         ],
-        sampleUrl: `https://api.mcsrranked.com/users/3c8757790ab0400b8b9e3936e0dd535b/seasons`
+        sampleUrl: null
     },
     'matches/': {
         title: `Get Recent Matches`,
@@ -887,6 +887,10 @@ function getResponseExample(endpoint) {
 }
 
 function getSampleResponse(url, id) {
+    if (url == `'null'`) {
+        $(`#${id}`).html(`<pre>This endpoint doesn't support sample response. :(</pre>`);
+        return;
+    }
     $(`#${id}`).html(`<pre>Loading...</pre>`);
     fetch(url).then(r => r.json()).then(json => {
         const limitArraysToFive = (obj) => {
