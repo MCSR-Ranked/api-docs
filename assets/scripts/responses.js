@@ -80,6 +80,11 @@ const endpoints = {
                 description: 'Date of user\'s last ranked match'
             },
             {
+                name: 'timestamp.nextDecay',
+                type: 'Date?',
+                description: 'Date of user\'s next decay time'
+            },
+            {
                 name: 'statistics.season.[key].[ranked | casual]',
                 type: 'Integer?',
                 description: 'season statistic for specific match type (`ranked` or `casual`)'
@@ -422,6 +427,81 @@ const endpoints = {
                 type: 'Integer',
                 description: 'Phase reword point'
             }
+        ],
+        sampleUrl: `https://api.mcsrranked.com/users/3c8757790ab0400b8b9e3936e0dd535b/seasons`
+    },
+    'users/{identifier}/live': {
+        title: `Get User's Live Match Data`,
+        method: 'GET',
+        category: 'users',
+        description: 'Returns real-time match data from the Private Room the player is in. To access this data, a `Private-Key` header is required. And, the player must be host or co-host of the Private Room.',
+        params: [
+            {
+                name: '{identifier}',
+                type: 'UserIdentifier',
+                required: true,
+                description: 'Check the `Objects#UserIdentifier` section.'
+            },
+            {
+                name: 'Private-Key',
+                type: 'String [Header]',
+                required: true,
+                description: 'It can be generated in-game via Profile -> Settings -> Generate & Copy API Private Key.'
+            }
+        ],
+        structures: [
+            {
+                name: 'lastId',
+                type: 'Integer?',
+                description: 'Match ID of previous match. All data will be reset when the match has ended. You can get previous match data with this.'
+            },
+            {
+                name: 'type',
+                type: 'MatchType'
+            },
+            {
+                name: 'status',
+                type: 'String',
+                description: 'It will be one of these value: `idle`, `counting`, `generate`, `ready`, `running`, `done`'
+            },
+            {
+                name: 'time',
+                type: 'Time',
+                description: 'It will be `0` if match has not started.'
+            },
+            {
+                name: 'players',
+                type: 'UserProfile[]',
+            },
+            {
+                name: 'spectators',
+                type: 'UserProfile[]',
+            },
+            {
+                name: 'timelines[].uuid',
+                type: 'String',
+                description: 'Player uuid of timeline'
+            },
+            {
+                name: 'timelines[].time',
+                type: 'Time',
+                description: 'Match time of timeline'
+            },
+            {
+                name: 'timelines[].type',
+                type: 'String',
+                description: 'Identifier of timeline'
+            },
+            {
+                name: 'completions[].uuid',
+                type: 'String',
+                description: 'Player uuid of completion'
+            },
+            {
+                name: 'completions[].time',
+                type: 'Time',
+                description: 'Match time of completion'
+            },
         ],
         sampleUrl: `https://api.mcsrranked.com/users/3c8757790ab0400b8b9e3936e0dd535b/seasons`
     },

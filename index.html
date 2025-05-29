@@ -300,6 +300,16 @@
                       <td><code>Integer</code></td>
                       <td>Level of achievement</td>
                     </tr>
+                    <tr>
+                      <td>value</td>
+                      <td><code>Integer?</code></td>
+                      <td>Contains current player's progression of achievement. If achievement is not leveling one, it will be <code>null</code></td>
+                    </tr>
+                    <tr>
+                      <td>goal</td>
+                      <td><code>Integer?</code></td>
+                      <td>Next level goal of achievement. If achievement is max level or not leveling one, it will be <code>null</code></td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -339,7 +349,7 @@
                     </tr>
                     <tr>
                       <td>category</td>
-                      <td><code>String</code></td>
+                      <td><code>String?</code></td>
                       <td>Match completions category. Default is <code>ANY</code></td>
                     </tr>
                     <tr>
@@ -438,11 +448,6 @@
                       <td>(Advanced) Player uuid of completion</td>
                     </tr>
                     <tr>
-                      <td>replayExist</td>
-                      <td><code>Boolean</code></td>
-                      <td>(Advanced) Whether match replay is exist in the server</td>
-                    </tr>
-                    <tr>
                       <td>completions[].time</td>
                       <td><code>Time</code></td>
                       <td>(Advanced) Match time of completion</td>
@@ -461,6 +466,11 @@
                       <td>timelines[].type</td>
                       <td><code>String</code></td>
                       <td>(Advanced) Identifier of timeline</td>
+                    </tr>
+                    <tr>
+                      <td>replayExist</td>
+                      <td><code>Boolean</code></td>
+                      <td>(Advanced) Whether match replay is exist in the server</td>
                     </tr>
                   </tbody>
                 </table>
