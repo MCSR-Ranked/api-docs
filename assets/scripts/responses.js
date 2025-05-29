@@ -887,7 +887,8 @@ function getResponseExample(endpoint) {
 }
 
 function getSampleResponse(url, id) {
-    if (url == `'null'`) {
+    if ($(`#${id}`).html()) return;
+    if (!url.startsWith('https://')) {
         $(`#${id}`).html(`<pre>This endpoint doesn't support sample response. :(</pre>`);
         return;
     }
