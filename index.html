@@ -39,7 +39,9 @@
       <div class="sidebar-scroll">
         <nav>
           <div class="sidebar-header">
-            <img src="assets/img/icon_x256.png" width="250px" height="250px">
+            <a href="#">
+              <img src="assets/img/icon_x256.png" width="250px" height="250px">
+            </a>
           </div>
           <ul class="nav">
             <li>
@@ -105,8 +107,9 @@
     <div class="main">
       <!-- MAIN CONTENT -->
       <div class="main-content">
-        <h1><strong>MCSR Ranked Rest API Document</strong></h1>
-        <div class="alert alert-danger">All endpoints have a ratelimit of 500 requests per 10 minutes unless otherwise specified.<br>If you want to use API Key with expanded ratelimit, please make a #ticket in our <a href="https://mcsrranked.com/discord" target="_blank">Discord Server</a></div>
+        <h1><strong>MCSR Ranked Rest API Documentation</strong></h1>
+        <div class="alert alert-danger">All endpoints have a ratelimit of 500 requests per 10 minutes unless otherwise specified.<br>If you want to use an API Key with an expanded ratelimit, please make a #ticket in our <a href="https://mcsrranked.com/discord" target="_blank">Discord Server</a>.</div>
+
         <hr />
         <div class="container-fluid" id="endpoint">
           <h2 class="page-title"><strong>Endpoints</strong></h2>
@@ -117,10 +120,14 @@
                 <pre>https://mcsrranked.com/api/</pre>
               </div>
               <div class="panel-body">
-                You can use both, but we would recommend to use first one.
+                You can use both, but we recommend using the first one.
               </div>
-            </div>
           </div>
+        </div>
+        <div class="container-fluid" id="authentication">
+            <h2><strong>Authentication</strong></h2>
+            <p>Many of the endpoints do not require authentication. To get a key for those that do, open an MCSR Ranked instance, go to Profile &rarr; Settings &rarr; Generate & Copy API Private Key.</p>
+            <p>That key can then be passed in a <code>Private-Key</code> header.</p>
         </div>
         <hr />
         <div class="container-fluid" id="response-200">
@@ -171,7 +178,7 @@
         <hr />
         <div class="container-fluid" id="response-401">
           <h2 class="page-title"><strong><span class="label label-danger">401</span> &nbsp; Wrong Parameters</strong></h2>
-          <h4 class="page-title">JSON response when used wrong parameters. The <code>data</code> of the API response will explain what went wrong.</h4>
+          <h4 class="page-title">JSON response when incorrect parameters are provided. The <code>data</code> of the API response will explain what went wrong.</h4>
           <div class="row">
             <div class="panel">
               <div class="panel-heading">
@@ -247,7 +254,7 @@
                     <tr>
                       <td>eloRate</td>
                       <td><code>Integer?</code></td>
-                      <td>User's Elo rate, If user haven't finished placement matches it will be <code>null</code></td>
+                      <td>User's Elo rate. It is <code>null</code> if the user hasn't finished placement matches.</td>
                     </tr>
                     <tr>
                       <td>eloRank</td>
@@ -257,7 +264,7 @@
                     <tr>
                       <td>country</td>
                       <td><code>String?</code></td>
-                      <td>User's country code. It's lowercased <a href="https://en.wikipedia.org/wiki/ISO_3166-1" target="_blank">ISO 3166-1 alpha-2</a> format</td>
+                      <td>User's country code in lowercased <a href="https://en.wikipedia.org/wiki/ISO_3166-1" target="_blank">ISO 3166-1 alpha-2</a> format.</td>
                     </tr>
                   </tbody>
                 </table>
@@ -288,7 +295,7 @@
                     <tr>
                       <td>date</td>
                       <td><code>Date</code></td>
-                      <td>Amount of changed elo rates</td>
+                      <td>Timestamp of when the achievement was earned</td>
                     </tr>
                     <tr>
                       <td>data</td>
@@ -303,12 +310,12 @@
                     <tr>
                       <td>value</td>
                       <td><code>Integer?</code></td>
-                      <td>Contains current player's progression of achievement. If achievement is not leveling one, it will be <code>null</code></td>
+                      <td>Contains the current player's progression of the achievement. It is <code>null</code> if the achievement is not a leveling one.</td>
                     </tr>
                     <tr>
                       <td>goal</td>
                       <td><code>Integer?</code></td>
-                      <td>Next level goal of achievement. If achievement is max level or not leveling one, it will be <code>null</code></td>
+                      <td>Next level goal of the achievement. It is <code>null</code> if the achievement is at max level or not a leveling one.</td>
                     </tr>
                   </tbody>
                 </table>
@@ -370,12 +377,12 @@
                     <tr>
                       <td>seed</td>
                       <td><code>MatchSeed?</code></td>
-                      <td>Seed id if it's ranked filtered seed. it's not real seed number of the seed. it will be <code>null</code> if it's decayed match.</td>
+                      <td>Seed ID if it's a ranked filtered seed. This is not the seed number. It is <code>null</code> if the seed is not filtered.</td>
                     </tr>
                     <tr>
                       <td>result.uuid</td>
                       <td><code>String?</code></td>
-                      <td>Winner's UUID, It will be `null` If match has draw</td>
+                      <td>Winner's UUID. It is <code>null</code> if the match was a draw.</td>
                     </tr>
                     <tr>
                       <td>result.time</td>
@@ -385,17 +392,17 @@
                     <tr>
                       <td>forfeited</td>
                       <td><code>Boolean</code></td>
-                      <td>Whether match has no completions</td>
+                      <td>Whether the match has no completions</td>
                     </tr>
                     <tr>
                       <td>decayed</td>
                       <td><code>Boolean</code></td>
-                      <td>Whether match has decayed match</td>
+                      <td>Whether the match has decayed</td>
                     </tr>
                     <tr>
                       <td>rank.season</td>
                       <td><code>Integer?</code></td>
-                      <td>Record rank of match's season</td>
+                      <td>Record rank of the match's season</td>
                     </tr>
                     <tr>
                       <td>rank.allTime</td>
@@ -410,37 +417,37 @@
                     <tr>
                       <td>changes[].change</td>
                       <td><code>Integer?</code></td>
-                      <td>Amount of changed Elo rate, if match has placements it will be <code>null</code></td>
+                      <td>Amount of changed Elo rate. It is <code>null</code> if the match is a placement.</td>
                     </tr>
                     <tr>
                       <td>changes[].eloRate</td>
                       <td><code>Integer?</code></td>
-                      <td>Elo rate of player, if match has placements it will be <code>null</code></td>
+                      <td>Elo rate of the player. It is <code>null</code> if the match is a placement.</td>
                     </tr>
                     <tr>
                       <td>tag</td>
                       <td><code>String?</code></td>
-                      <td>Special tag of this match. It's used by get matches with tag</td>
+                      <td>Special tag of this match. Used to get matches by tag.</td>
                     </tr>
                     <tr>
                       <td>beginner</td>
                       <td><code>Boolean</code></td>
-                      <td>Whether match has enabled beginner mode</td>
+                      <td>Whether beginner mode is enabled in the match.</td>
                     </tr>
                     <tr>
                       <td>vod[].uuid</td>
                       <td><code>String</code></td>
-                      <td>UUID of vod owner. Only players with public stream activated will be included.</td>
+                      <td>UUID of VOD owner. Only players with public stream activated will be included.</td>
                     </tr>
                     <tr>
                       <td>vod[].url</td>
                       <td><code>String</code></td>
-                      <td>VOD url of this match with vod owner</td>
+                      <td>VOD URL of this match</td>
                     </tr>
                     <tr>
                       <td>vod[].startsAt</td>
                       <td><code>Date</code></td>
-                      <td>VOD start date. you can get a timestamp with <code>{date} - {vod[].startsAt}</code></td>
+                      <td>VOD start date. You can get a timestamp with <code>{date} - {vod[].startsAt}</code></td>
                     </tr>
                     <tr>
                       <td>completions[].uuid</td>
@@ -470,7 +477,7 @@
                     <tr>
                       <td>replayExist</td>
                       <td><code>Boolean</code></td>
-                      <td>(Advanced) Whether match replay is exist in the server</td>
+                      <td>(Advanced) Whether the match replay exists in the server</td>
                     </tr>
                   </tbody>
                 </table>
@@ -496,7 +503,7 @@
                     <tr>
                       <td>id</td>
                       <td><code>String?</code></td>
-                      <td>Seed id if it's ranked filtered seed. it's not real seed number of the seed. it will be <code>null</code> if seed is not filtered.</td>
+                      <td>Seed ID if it's a ranked filtered seed. This is not the seed number. It is <code>null</code> if the seed is not filtered.</td>
                     </tr>
                     <tr>
                       <td>overworld</td>
@@ -511,7 +518,7 @@
                     <tr>
                       <td>endTowers</td>
                       <td><code>Integer[]</code></td>
-                      <td>The <a href="./assets/img/endTowers.png" target="_blank">zero related tower</a> heights of in The End dimension. it will be empty array if seed is not filtered.</td>
+                      <td>The <a href="./assets/img/endTowers.png" target="_blank">zero related tower</a> heights in the End dimension. It is an empty array if the seed is not filtered.</td>
                     </tr>
                     <tr>
                       <td>variations</td>
@@ -542,17 +549,17 @@
                   <tbody>
                     <tr>
                       <td>UUID</td>
-                      <td>UUID of User, you can also use with dashes(<code>-</code>).</td>
+                      <td>UUID of User. You can also use it with dashes (<code>-</code>).</td>
                       <td><code>bbc886da1b024739b4b80f1542e9f61d</code></td>
                     </tr>
                     <tr>
                       <td>Nickname</td>
-                      <td>Nickname of User. It's not case sensitive.</td>
+                      <td>Nickname of User. It is not case-sensitive.</td>
                       <td><code>RED_LIME</code></td>
                     </tr>
                     <tr>
                       <td>Discord ID</td>
-                      <td>Linked Discord ID(Snowflake) of User. Must be <code>discord.[ID]</code> format.</td>
+                      <td>Linked Discord ID (Snowflake) of User. Must be <code>discord.[ID]</code> format.</td>
                       <td><code>discord.338669823167037440</code></td>
                     </tr>
                   </tbody>
