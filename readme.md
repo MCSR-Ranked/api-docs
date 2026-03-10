@@ -1,4 +1,6 @@
-# Universal Tennis Rating API Documentation
+# MCSR Ranked API Documentation
+
+API Documentation for [MCSR Ranked](https://mcsrranked.com).
 
 ## Built With
 
