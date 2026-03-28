@@ -1,0 +1,1576 @@
+openapi: 3.0.3
+info:
+  title: MCSR Ranked API
+  description: API for Minecraft Speedrun Ranked.
+  version: 1.0.0
+servers:
+  - url: https://api.mcsrranked.com
+    description: Primary
+  - url: https://mcsrranked.com/api
+    description: Alternative
+paths:
+  /users/{identifier}:
+    get:
+      summary: Get User Data
+      description: Returns {identifier}'s entire profile data.
+      operationId: getUserData
+      tags:
+        - users
+      parameters:
+        - name: identifier
+          in: path
+          required: true
+          description: Check the Objects#UserIdentifier section.
+          schema:
+            $ref: "#/components/schemas/UserIdentifier"
+        - name: season
+          in: query
+          required: false
+          description: "Specific season match for statistics (default: current season number)"
+          schema:
+            type: integer
+      security: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+                    properties:
+                      uuid:
+                        type: string
+                        description: UUID (without Dashes)
+                      nickname:
+                        type: string
+                      roleType:
+                        type: integer
+                      eloRate:
+                        type: integer
+                        nullable: true
+                        description: Elo rate of current season, if the user hasn't finished placement matches it is null
+                      eloRank:
+                        type: integer
+                        nullable: true
+                        description: Current season rank
+                      country:
+                        type: string
+                        nullable: true
+                        description: Country code in lowercased ISO 3166-1 alpha-2 format
+                      seasonResult:
+                        type: object
+                        properties:
+                          highest:
+                            type: integer
+                            description: Highest Elo rate this season
+                          lowest:
+                            type: integer
+                            description: Lowest Elo rate this season
+                          last:
+                            type: object
+                            properties:
+                              eloRate:
+                                type: integer
+                                description: Current Elo rate this season
+                              eloRank:
+                                type: integer
+                                nullable: true
+                                description: Current Elo rank this season
+                              phasePoint:
+                                type: integer
+                                description: Current phase points this season
+                          phases:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                phase:
+                                  type: integer
+                                  description: Phase number
+                                eloRate:
+                                  type: integer
+                                  description: Elo rate at phase end
+                                eloRank:
+                                  type: integer
+                                  description: Elo rank at phase end
+                                point:
+                                  type: integer
+                                  description: Phase reward points
+                        nullable: true
+                        description: User's Elo data of season
+                      weeklyRaces:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              description: ID of the weekly race
+                            time:
+                              $ref: "#/components/schemas/Time"
+                              description: Final time of the weekly race
+                            rank:
+                              type: integer
+                              description: Rank in the weekly race
+                        description: User's results of all weekly races
+                      achievements:
+                        type: object
+                        properties:
+                          display:
+                            type: array
+                            items:
+                              $ref: "#/components/schemas/Achievement"
+                            description: Achievements displayed in-game
+                          total:
+                            type: array
+                            items:
+                              $ref: "#/components/schemas/Achievement"
+                            description: Achievements not displayed in-game
+                      timestamp:
+                        type: object
+                        properties:
+                          firstOnline:
+                            $ref: "#/components/schemas/Date"
+                            description: Date of user's first connection
+                          lastOnline:
+                            $ref: "#/components/schemas/Date"
+                            description: Date of user's last connection
+                          lastRanked:
+                            $ref: "#/components/schemas/Date"
+                            description: Date of user's last ranked match
+                          nextDecay:
+                            type: integer
+                            description: Date of user's next decay time
+                            nullable: true
+                      statistics:
+                        type: object
+                        properties:
+                          season:
+                            type: object
+                            additionalProperties:
+                              type: object
+                              properties:
+                                "[ranked | casual]":
+                                  type: integer
+                                  nullable: true
+                                  description: Season statistics for specific match types (ranked or casual)
+                          total:
+                            type: object
+                            additionalProperties:
+                              type: object
+                              properties:
+                                "[ranked | casual]":
+                                  type: integer
+                                  nullable: true
+                                  description: All-time statistics for specific match types (ranked or casual)
+                      connections:
+                        type: object
+                        additionalProperties:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              nullable: true
+                              description: Identifier of user's third party connections like Twitch, Discord, etc.
+                            name:
+                              type: string
+                              nullable: true
+                              description: Display name of user's third party connections like Twitch, Discord, etc.
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "429":
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /users/{identifier}/matches:
+    get:
+      summary: Get User Matches
+      description: Returns {identifier}'s recent matches
+      operationId: getUserMatches
+      tags:
+        - users
+      parameters:
+        - name: identifier
+          in: path
+          required: true
+          description: Check the Objects#UserIdentifier section.
+          schema:
+            $ref: "#/components/schemas/UserIdentifier"
+        - name: before
+          in: query
+          required: false
+          description: Match list cursor, it must be match ID. Get matches before this ID.
+          schema:
+            type: integer
+        - name: after
+          in: query
+          required: false
+          description: Match list cursor, it must be match ID. Get matches after this ID.
+          schema:
+            type: integer
+        - name: sort
+          in: query
+          required: false
+          description: "Match list sort option. It must be one of: newest, oldest, fastest, slowest (default: newest)"
+          schema:
+            type: string
+        - name: count
+          in: query
+          required: false
+          description: "Number of matches in the response, it must be between 1 and 100 (default: 20)"
+          schema:
+            type: integer
+        - name: type
+          in: query
+          required: false
+          description: "Filter by match type (default: null)"
+          schema:
+            type: integer
+            enum:
+              - 1
+              - 2
+              - 3
+              - 4
+            description: Match type
+            nullable: true
+        - name: season
+          in: query
+          required: false
+          description: "Filter by season (default: current season number)"
+          schema:
+            type: integer
+        - name: excludedecay
+          in: query
+          required: false
+          description: "Whether to exclude decayed matches (default: false)"
+          schema:
+            type: boolean
+      security: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/MatchInfo"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "429":
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /users/{identifier1}/versus/{identifier2}:
+    get:
+      summary: Get Versus Stats
+      description: >-
+        Returns the match stats between {identifier1} and {identifier2} for ranked/casual matches. If they haven't
+        played each other, a 400 error will be returned.
+      operationId: getVersusStats
+      tags:
+        - versus
+      parameters:
+        - name: identifier1
+          in: path
+          required: true
+          description: Check the Objects#UserIdentifier section.
+          schema:
+            $ref: "#/components/schemas/UserIdentifier"
+        - name: identifier2
+          in: path
+          required: true
+          description: Check the Objects#UserIdentifier section.
+          schema:
+            $ref: "#/components/schemas/UserIdentifier"
+        - name: season
+          in: query
+          required: false
+          description: "Specific season match (default: current season number)"
+          schema:
+            type: integer
+      security: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+                    properties:
+                      players:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/UserProfile"
+                      results:
+                        type: object
+                        additionalProperties:
+                          type: object
+                          properties:
+                            "[key]":
+                              type: integer
+                              description: >-
+                                Mapping of wins per player, with their UUID as key. total key returns the sum of
+                                matches.
+                      changes:
+                        type: object
+                        additionalProperties:
+                          type: integer
+                        description: Total Elo rate changes between players
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "429":
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /users/{identifier1}/versus/{identifier2}/matches:
+    get:
+      summary: Get Versus Matches
+      description: Returns the recent matches between {identifier1} and {identifier2}.
+      operationId: getVersusMatches
+      tags:
+        - versus
+      parameters:
+        - name: identifier1
+          in: path
+          required: true
+          description: Check the Objects#UserIdentifier section.
+          schema:
+            $ref: "#/components/schemas/UserIdentifier"
+        - name: identifier2
+          in: path
+          required: true
+          description: Check the Objects#UserIdentifier section.
+          schema:
+            $ref: "#/components/schemas/UserIdentifier"
+        - name: before
+          in: query
+          required: false
+          description: Match list cursor, it must be match ID. Get matches before this ID.
+          schema:
+            type: integer
+        - name: after
+          in: query
+          required: false
+          description: Match list cursor, it must be match ID. Get matches after this ID.
+          schema:
+            type: integer
+        - name: count
+          in: query
+          required: false
+          description: "Number of matches in the response, it must be between 1 and 100 (default: 20)"
+          schema:
+            type: integer
+        - name: type
+          in: query
+          required: false
+          description: "Filter by match type (default: null)"
+          schema:
+            type: integer
+            enum:
+              - 1
+              - 2
+              - 3
+              - 4
+            description: Match type
+            nullable: true
+        - name: season
+          in: query
+          required: false
+          description: "Filter by season (default: current season number)"
+          schema:
+            type: integer
+      security: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/MatchInfo"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "429":
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /users/{identifier}/seasons:
+    get:
+      summary: Get All User Season Results
+      description: Returns the {identifier}'s entire profile data.
+      operationId: getAllUserSeasonResults
+      tags:
+        - users
+      parameters:
+        - name: identifier
+          in: path
+          required: true
+          description: Check the Objects#UserIdentifier section.
+          schema:
+            $ref: "#/components/schemas/UserIdentifier"
+      security: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+                    properties:
+                      uuid:
+                        type: string
+                        description: UUID (without Dashes)
+                      nickname:
+                        type: string
+                      roleType:
+                        type: integer
+                      eloRate:
+                        type: integer
+                        nullable: true
+                        description: Elo rate of current season, if the user hasn't finished placement matches it is null
+                      eloRank:
+                        type: integer
+                        nullable: true
+                        description: Current season rank
+                      country:
+                        type: string
+                        nullable: true
+                        description: Country code in lowercased ISO 3166-1 alpha-2 format
+                      seasonResults:
+                        type: object
+                        additionalProperties:
+                          type: object
+                          properties:
+                            highest:
+                              type: integer
+                              description: Highest Elo rate this season
+                            lowest:
+                              type: integer
+                              description: Lowest Elo rate this season
+                            last:
+                              type: object
+                              properties:
+                                eloRate:
+                                  type: integer
+                                  description: Current Elo rate this season
+                                eloRank:
+                                  type: integer
+                                  nullable: true
+                                  description: Current Elo rank this season
+                                phasePoint:
+                                  type: integer
+                                  description: Current phase points this season
+                            phases:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  phase:
+                                    type: integer
+                                    description: Phase number
+                                  eloRate:
+                                    type: integer
+                                    description: Elo rate at phase end
+                                  eloRank:
+                                    type: integer
+                                    description: Elo rank at phase end
+                                  point:
+                                    type: integer
+                                    description: Phase reward points
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "429":
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /users/{identifier}/live:
+    get:
+      summary: Get User's Live Match Data
+      description: >-
+        Returns real-time match data from the Private Room the player is in. To access this data, a Private-Key header
+        is required and the player must be host or co-host of the Private Room.
+      operationId: getUsersLiveMatchData
+      tags:
+        - users
+      parameters:
+        - name: identifier
+          in: path
+          required: true
+          description: Check the Objects#UserIdentifier section.
+          schema:
+            $ref: "#/components/schemas/UserIdentifier"
+      security:
+        - PrivateKey: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+                    properties:
+                      lastId:
+                        type: integer
+                        nullable: true
+                        description: >-
+                          Match ID of previous match. All data is reset when the match ends. You can get previous match
+                          data with this.
+                      type:
+                        $ref: "#/components/schemas/MatchType"
+                      status:
+                        type: string
+                        description: One of idle, counting, generate, ready, running, done
+                      time:
+                        $ref: "#/components/schemas/Time"
+                        description: Returns 0 if the match has not started.
+                      players:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/UserProfile"
+                      spectators:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/UserProfile"
+                      timelines:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            uuid:
+                              type: string
+                              description: Player uuid of timeline
+                            time:
+                              $ref: "#/components/schemas/Time"
+                              description: Match time of timeline
+                            type:
+                              type: string
+                              description: Identifier of timeline
+                      completions:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            uuid:
+                              type: string
+                              description: Player uuid of completion
+                            time:
+                              $ref: "#/components/schemas/Time"
+                              description: Match time of completion
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "429":
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /matches:
+    get:
+      summary: Get Recent Matches
+      description: Returns recent completed matches.
+      operationId: getRecentMatches
+      tags:
+        - matches
+      parameters:
+        - name: before
+          in: query
+          required: false
+          description: Match list cursor, it must be match ID. Get matches before this ID.
+          schema:
+            type: integer
+        - name: after
+          in: query
+          required: false
+          description: Match list cursor, it must be match ID. Get matches after this ID.
+          schema:
+            type: integer
+        - name: count
+          in: query
+          required: false
+          description: "Number of matches in the response, it must be between 1 and 100 (default: 20)"
+          schema:
+            type: integer
+        - name: type
+          in: query
+          required: false
+          description: "Filter by match type (default: null)"
+          schema:
+            type: integer
+            enum:
+              - 1
+              - 2
+              - 3
+              - 4
+            description: Match type
+            nullable: true
+        - name: tag
+          in: query
+          required: false
+          description: Filter by match tag.
+          schema:
+            type: string
+        - name: season
+          in: query
+          required: false
+          description: "Filter by season (default: current season number)"
+          schema:
+            type: integer
+        - name: includedecay
+          in: query
+          required: false
+          description: >-
+            Whether to include decay matches. If you want to use it, just add the key of the parameter, such as
+            ?includedecay
+          schema:
+            type: string
+          allowEmptyValue: true
+      security: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/MatchInfo"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "429":
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /matches/{match_id}:
+    get:
+      summary: Get Match Info
+      description: Returns the detailed match info.
+      operationId: getMatchInfo
+      tags:
+        - matches
+      parameters:
+        - name: match_id
+          in: path
+          required: true
+          description: ID of the match
+          schema:
+            type: integer
+      security: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    $ref: "#/components/schemas/MatchInfoAdvanced"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "429":
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /live:
+    get:
+      summary: Get Online Players & Live Stream Matches
+      description: >-
+        Returns the online playercount and live matches with public streams.<br>To make your stream public:<ol><li>Link
+        your Twitch account with your MCSR Ranked profile.</li><li>Make your Twitch public on your MCSR Ranked
+        profile.</li><li>Set "Public Stream" option in MCSR Ranked Settings.</li><li>Start streaming on
+        Twitch.</li></ol>
+      operationId: getOnlinePlayersLiveStreamMatches
+      tags:
+        - live
+      security: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+                    properties:
+                      players:
+                        type: integer
+                        description: Concurrent number of players who are connected to the MCSR Ranked server
+                      liveMatches:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            currentTime:
+                              $ref: "#/components/schemas/Time"
+                            players:
+                              type: array
+                              items:
+                                $ref: "#/components/schemas/UserProfile"
+                              description: Only players with public stream enabled are included.
+                            data:
+                              type: object
+                              additionalProperties:
+                                type: object
+                                properties:
+                                  liveUrl:
+                                    type: string
+                                    nullable: true
+                                    description: >-
+                                      Live stream url of player. This is null if the player hasn't activated public
+                                      stream.
+                                  timeline:
+                                    type: object
+                                    properties:
+                                      time:
+                                        $ref: "#/components/schemas/Time"
+                                        description: Match time of last player split update.
+                                      type:
+                                        type: string
+                                        description: Timeline identifier of last player split update.
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "429":
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /leaderboard:
+    get:
+      summary: Get Elo Leaderboard
+      description: >-
+        Returns the top 150 players on the leaderboard, ranked by their Elo rate (it's not always 150 players due to
+        same ranks)
+      operationId: getEloLeaderboard
+      tags:
+        - leaderboards
+      parameters:
+        - name: season
+          in: query
+          required: false
+          description: "Specific season (default: current season number)"
+          schema:
+            type: integer
+        - name: country
+          in: query
+          required: false
+          description: Specific country code with lowercased ISO 3166-1 alpha-2 format
+          schema:
+            type: string
+      security: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+                    properties:
+                      users:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            seasonResult:
+                              type: object
+                              properties:
+                                eloRate:
+                                  type: integer
+                                  description: Final Elo rate of player in target season
+                                eloRank:
+                                  type: integer
+                                  description: Final Elo rank of player in target season
+                                phasePoint:
+                                  type: integer
+                                  description: Final phase points of player in target season
+                      season:
+                        type: object
+                        properties:
+                          startsAt:
+                            $ref: "#/components/schemas/Date"
+                            description: Date of season start.
+                          endsAt:
+                            $ref: "#/components/schemas/Date"
+                            description: Date of season end.
+                          number:
+                            type: integer
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "429":
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /phase-leaderboard:
+    get:
+      summary: Get Season Phase Points Leaderboard
+      description: Returns the top 100 players ranked by their Phase Points
+      operationId: getSeasonPhasePointsLeaderboard
+      tags:
+        - leaderboards
+      parameters:
+        - name: season
+          in: query
+          required: false
+          description: "Filter by season (default: current season number)"
+          schema:
+            type: integer
+        - name: country
+          in: query
+          required: false
+          description: "Filter by country (format: ISO 3166-1 alpha-2)"
+          schema:
+            type: string
+        - name: predicted
+          in: query
+          required: false
+          description: Get predicted phase points leaderboard. Only works with the current season
+          schema:
+            type: string
+          allowEmptyValue: true
+      security: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+                    properties:
+                      users:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            predPhasePoint:
+                              type: integer
+                              description: >-
+                                Predicted phase points of player for next phase. It will be same value with
+                                users[].seasonResult.phasePoint if response is a past season.
+                            seasonResult:
+                              type: object
+                              properties:
+                                eloRate:
+                                  type: integer
+                                  description: Final Elo rate of player in target season
+                                eloRank:
+                                  type: integer
+                                  description: Final Elo rank of player in target season
+                                phasePoint:
+                                  type: integer
+                                  description: Final phase points of player in target season
+                      phase:
+                        type: object
+                        properties:
+                          endsAt:
+                            type: integer
+                            description: Date the season ends. If target season is not current season it is null
+                            nullable: true
+                          number:
+                            type: integer
+                            nullable: true
+                            description: Phase number of the season. If target season is not current season it is null
+                          season:
+                            type: integer
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "429":
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /record-leaderboard:
+    get:
+      summary: Get Season Best Time Leaderboard
+      description: Returns the 100 fastest runs of a season
+      operationId: getSeasonBestTimeLeaderboard
+      tags:
+        - leaderboards
+      parameters:
+        - name: season
+          in: query
+          required: false
+          description: >-
+            Filter by season. If it's 0, it will default to the current season. If it's not defined, it combines all
+            seasons. (default: undefined)
+          schema:
+            type: integer
+        - name: distinct
+          in: query
+          required: false
+          description: Whether to only get distinct runners. If enabled, only the fastest run of each runner is returned.
+          schema:
+            type: string
+          allowEmptyValue: true
+      security: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        rank:
+                          type: integer
+                        season:
+                          type: integer
+                        date:
+                          $ref: "#/components/schemas/Date"
+                        id:
+                          type: integer
+                          description: Match ID
+                        time:
+                          $ref: "#/components/schemas/Time"
+                        user:
+                          $ref: "#/components/schemas/UserProfile"
+                        seed:
+                          $ref: "#/components/schemas/MatchSeed"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "429":
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /weekly-race:
+    get:
+      summary: Get Weekly Race Leaderboard
+      description: Returns Weekly Race info and leaderboard
+      operationId: getWeeklyRaceLeaderboard
+      tags:
+        - weekly-races
+      security: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      endsAt:
+                        $ref: "#/components/schemas/Date"
+                      seed:
+                        type: object
+                        properties:
+                          overworld:
+                            type: string
+                          nether:
+                            type: string
+                          theEnd:
+                            type: string
+                          rng:
+                            type: string
+                      leaderboard:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            rank:
+                              type: integer
+                            player:
+                              $ref: "#/components/schemas/UserProfile"
+                            time:
+                              $ref: "#/components/schemas/Time"
+                            replayExist:
+                              type: boolean
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "429":
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /weekly-race/{id}:
+    get:
+      summary: Get Weekly Race Leaderboard
+      description: Returns Weekly Race info and leaderboard
+      operationId: getWeeklyRaceLeaderboardById
+      tags:
+        - weekly-races
+      parameters:
+        - name: id
+          in: path
+          required: false
+          description: "Specific week number (as id in this endpoint) (default: current weekly race)"
+          schema:
+            type: integer
+      security: []
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      endsAt:
+                        $ref: "#/components/schemas/Date"
+                      seed:
+                        type: object
+                        properties:
+                          overworld:
+                            type: string
+                          nether:
+                            type: string
+                          theEnd:
+                            type: string
+                          rng:
+                            type: string
+                      leaderboard:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            rank:
+                              type: integer
+                            player:
+                              $ref: "#/components/schemas/UserProfile"
+                            time:
+                              $ref: "#/components/schemas/Time"
+                            replayExist:
+                              type: boolean
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "429":
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+components:
+  securitySchemes:
+    PrivateKey:
+      type: apiKey
+      in: header
+      name: Private-Key
+      description: Generated in-game via Profile > Settings > Generate & Copy API Private Key.
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        data:
+          type: string
+          nullable: true
+    UserProfile:
+      type: object
+      description: UserProfile data
+      properties:
+        uuid:
+          type: string
+          description: User's UUID
+        nickname:
+          type: string
+          description: User's nickname
+        roleType:
+          type: integer
+          description: User's role type
+        eloRate:
+          type: integer
+          nullable: true
+          description: User's Elo rate. It is null if the user hasn't finished placement matches.
+        eloRank:
+          type: integer
+          nullable: true
+          description: User's Elo rank
+        country:
+          type: string
+          nullable: true
+          description: User's country code in lowercased ISO 3166-1 alpha-2 format.
+      required:
+        - uuid
+        - nickname
+        - roleType
+    Achievement:
+      type: object
+      description: Achievement data
+      properties:
+        id:
+          type: string
+          description: Achievement Identifier
+        date:
+          $ref: "#/components/schemas/Date"
+          description: Timestamp of when the achievement was earned
+        data:
+          type: array
+          items:
+            type: string
+          description: Additional data array
+        level:
+          type: integer
+          description: Level of achievement
+        value:
+          type: integer
+          nullable: true
+          description: >-
+            Contains the current player's progression of the achievement. It is null if the achievement is not a
+            leveling one.
+        goal:
+          type: integer
+          nullable: true
+          description: Next level goal of the achievement. It is null if the achievement is at max level or not a leveling one.
+      required:
+        - id
+        - date
+        - data
+        - level
+    MatchInfo:
+      type: object
+      description: MatchInfo data
+      properties:
+        id:
+          type: string
+        type:
+          $ref: "#/components/schemas/MatchType"
+        season:
+          type: integer
+        category:
+          type: string
+          nullable: true
+          description: Match completions category. Default is ANY
+        date:
+          $ref: "#/components/schemas/Date"
+        players:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserProfile"
+        spectators:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserProfile"
+        seed:
+          allOf:
+            - $ref: "#/components/schemas/MatchSeed"
+          description: Seed ID if it's a ranked filtered seed. This is not the seed number. It is null if the seed is not filtered.
+        forfeited:
+          type: boolean
+          description: Whether the match has no completions
+        decayed:
+          type: boolean
+          description: Whether the match has decayed
+        tag:
+          type: string
+          nullable: true
+          description: Special tag of this match. Used to get matches by tag.
+        beginner:
+          type: boolean
+          description: Whether beginner mode is enabled in the match.
+        replayExist:
+          type: boolean
+          description: (Advanced) Whether the match replay exists in the server
+        result:
+          type: object
+          properties:
+            uuid:
+              type: string
+              nullable: true
+              description: Winner's UUID. It is null if the match was a draw.
+            time:
+              $ref: "#/components/schemas/Time"
+        rank:
+          type: object
+          properties:
+            season:
+              type: integer
+              nullable: true
+              description: Record rank of the match's season
+            allTime:
+              type: integer
+              nullable: true
+              description: Record rank of all-time
+        changes:
+          type: array
+          items:
+            type: object
+            properties:
+              uuid:
+                type: string
+                description: UUID of player
+              change:
+                type: integer
+                nullable: true
+                description: Amount of changed Elo rate. It is null if the match is a placement.
+              eloRate:
+                type: integer
+                nullable: true
+                description: Elo rate of the player. It is null if the match is a placement.
+        vod:
+          type: array
+          items:
+            type: object
+            properties:
+              uuid:
+                type: string
+                description: UUID of VOD owner. Only players with public stream activated will be included.
+              url:
+                type: string
+                description: VOD URL of this match
+              startsAt:
+                $ref: "#/components/schemas/Date"
+                description: VOD start date. You can get a timestamp with {date} - {vod[].startsAt}
+        completions:
+          type: array
+          items:
+            type: object
+            properties:
+              uuid:
+                type: string
+                description: (Advanced) Player uuid of completion
+              time:
+                $ref: "#/components/schemas/Time"
+                description: (Advanced) Match time of completion
+        timelines:
+          type: array
+          items:
+            type: object
+            properties:
+              uuid:
+                type: string
+                description: (Advanced) Player uuid of timeline
+              time:
+                $ref: "#/components/schemas/Time"
+                description: (Advanced) Match time of timeline
+              type:
+                type: string
+                description: (Advanced) Identifier of timeline
+      required:
+        - id
+        - type
+        - season
+        - date
+        - players
+        - spectators
+        - forfeited
+        - decayed
+        - beginner
+        - replayExist
+    MatchSeed:
+      type: object
+      description: MatchSeed data
+      properties:
+        id:
+          type: string
+          nullable: true
+          description: Seed id if it's a ranked filtered seed. This is not the seed number. It is null if the seed is not filtered.
+        overworld:
+          type: string
+          nullable: true
+          description: Overworld structure type of the seed. It is null if the seed is not filtered.
+        nether:
+          type: string
+          nullable: true
+          description: Bastion remnants type of the seed. It is null if the seed is not filtered.
+        endTowers:
+          type: array
+          items:
+            type: integer
+          description: The zero related tower heights of in The End dimension. It is an empty array if the seed is not filtered.
+        variations:
+          type: array
+          items:
+            type: string
+          description: Noticeable variations of the seed. It is an empty array if the seed is not filtered.
+      required:
+        - endTowers
+        - variations
+    UserIdentifier:
+      type: string
+      description: Identifier used when getting user information. You must use one of the formats below.
+    MatchType:
+      type: integer
+      description: "Match type: 1 = Casual, 2 = Ranked, 3 = Private Room, 4 = Event Mode"
+      enum:
+        - 1
+        - 2
+        - 3
+        - 4
+    Date:
+      type: integer
+      description: Displays a specific date as an epoch time (timestamp) in seconds. (NOT milliseconds!)
+    Time:
+      type: integer
+      description: Displays a specific duration in milliseconds.
+    MatchInfoAdvanced:
+      description: Match information with advanced fields (only from /matches/{match_id})
+      allOf:
+        - $ref: "#/components/schemas/MatchInfo"
+        - type: object
+          properties:
+            completions:
+              type: array
+              items:
+                type: object
+                properties:
+                  uuid:
+                    type: string
+                    description: (Advanced) Player uuid of completion
+                  time:
+                    $ref: "#/components/schemas/Time"
+                    description: (Advanced) Match time of completion
+            timelines:
+              type: array
+              items:
+                type: object
+                properties:
+                  uuid:
+                    type: string
+                    description: (Advanced) Player uuid of timeline
+                  time:
+                    $ref: "#/components/schemas/Time"
+                    description: (Advanced) Match time of timeline
+                  type:
+                    type: string
+                    description: (Advanced) Identifier of timeline
+            replayExist:
+              type: boolean
+              description: (Advanced) Whether the match replay exists in the server
