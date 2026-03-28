@@ -1,0 +1,10 @@
+{
+  "name": "mcsr-ranked-api-docs",
+  "private": true,
+  "scripts": {
+    "generate": "node scripts/generate-openapi.js"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0"
+  }
+}
