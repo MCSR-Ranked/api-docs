@@ -47,7 +47,7 @@ const endpoints = {
             {
                 name: 'eloRank',
                 type: 'Integer?',
-                description: 'Current season rank'
+                description: 'Current season leaderboard rank'
             },
             {
                 name: 'country',
@@ -117,7 +117,7 @@ const endpoints = {
             {
                 name: 'seasonResult.last.eloRank',
                 type: 'Integer?',
-                description: 'Current Elo rank this season'
+                description: 'Current leaderboard rank this season'
             },
             {
                 name: 'seasonResult.last.phasePoint',
@@ -147,7 +147,7 @@ const endpoints = {
             {
                 name: 'seasonResult.phases[].eloRank',
                 type: 'Integer',
-                description: 'Elo rank at phase end'
+                description: 'Leaderboard rank at phase end'
             },
             {
                 name: 'seasonResult.phases[].point',
@@ -375,7 +375,7 @@ const endpoints = {
             {
                 name: 'eloRank',
                 type: 'Integer?',
-                description: 'Current season rank'
+                description: 'Current season leaderboard rank'
             },
             {
                 name: 'country',
@@ -390,7 +390,7 @@ const endpoints = {
             {
                 name: 'seasonResults.{season}.last.eloRank',
                 type: 'Integer?',
-                description: 'Current Elo rank this season'
+                description: 'Current leaderboard rank this season'
             },
             {
                 name: 'seasonResults.{season}.last.phasePoint',
@@ -420,7 +420,7 @@ const endpoints = {
             {
                 name: 'seasonResults.{season}.phases[].eloRank',
                 type: 'Integer',
-                description: 'Elo rank at phase end'
+                description: 'Leaderboard rank at phase end'
             },
             {
                 name: 'seasonResults.{season}.phases[].point',
@@ -668,7 +668,7 @@ const endpoints = {
             {
                 name: 'users[].seasonResult.eloRank',
                 type: 'Integer',
-                description: 'Final Elo rank of player in target season'
+                description: 'Final leaderboard rank of player in target season'
             },
             {
                 name: 'users[].seasonResult.phasePoint',
@@ -730,7 +730,7 @@ const endpoints = {
             {
                 name: 'users[].seasonResult.eloRank',
                 type: 'Integer',
-                description: 'Final Elo rank of player in target season'
+                description: 'Final leaderboard rank of player in target season'
             },
             {
                 name: 'users[].seasonResult.phasePoint',
