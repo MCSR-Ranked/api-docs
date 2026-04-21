@@ -1,0 +1,1355 @@
+openapi: 3.1.0
+info:
+  title: MCSR Ranked API
+  version: 1.0.0
+  description: |
+    OpenAPI description for the public MCSR Ranked REST API.
+
+    All endpoints are limited to 500 requests per 10 minutes unless otherwise specified.
+    If you need expanded rate limits, request an API key through the MCSR Ranked Discord server.
+
+    All endpoints are public except `GET /users/{identifier}/live`, which requires a `Private-Key`
+    header generated in-game.
+servers:
+  - url: https://api.mcsrranked.com
+    description: Recommended production server
+  - url: https://mcsrranked.com/api
+    description: Alternate production server
+tags:
+  - name: Users
+  - name: Versus
+  - name: Matches
+  - name: Live
+  - name: Leaderboards
+  - name: Weekly Race
+paths:
+  /users/{identifier}:
+    get:
+      tags:
+        - Users
+      summary: Get user data
+      operationId: getUserData
+      parameters:
+        - $ref: '#/components/parameters/IdentifierParam'
+        - $ref: '#/components/parameters/SeasonParam'
+      responses:
+        '200':
+          description: User profile returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/WrongParameters'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /users/{identifier}/matches:
+    get:
+      tags:
+        - Users
+      summary: Get user matches
+      operationId: getUserMatches
+      parameters:
+        - $ref: '#/components/parameters/IdentifierParam'
+        - $ref: '#/components/parameters/BeforeParam'
+        - $ref: '#/components/parameters/AfterParam'
+        - $ref: '#/components/parameters/SortParam'
+        - $ref: '#/components/parameters/CountParam'
+        - $ref: '#/components/parameters/MatchTypeParam'
+        - $ref: '#/components/parameters/SeasonParam'
+        - $ref: '#/components/parameters/ExcludeDecayParam'
+      responses:
+        '200':
+          description: User matches returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MatchListResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/WrongParameters'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /users/{identifier1}/versus/{identifier2}:
+    get:
+      tags:
+        - Versus
+      summary: Get versus stats
+      operationId: getVersusStats
+      parameters:
+        - $ref: '#/components/parameters/Identifier1Param'
+        - $ref: '#/components/parameters/Identifier2Param'
+        - $ref: '#/components/parameters/SeasonParam'
+      responses:
+        '200':
+          description: Versus statistics returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VersusResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/WrongParameters'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /users/{identifier1}/versus/{identifier2}/matches:
+    get:
+      tags:
+        - Versus
+      summary: Get versus matches
+      operationId: getVersusMatches
+      parameters:
+        - $ref: '#/components/parameters/Identifier1Param'
+        - $ref: '#/components/parameters/Identifier2Param'
+        - $ref: '#/components/parameters/BeforeParam'
+        - $ref: '#/components/parameters/AfterParam'
+        - $ref: '#/components/parameters/CountParam'
+        - $ref: '#/components/parameters/MatchTypeParam'
+        - $ref: '#/components/parameters/SeasonParam'
+      responses:
+        '200':
+          description: Versus matches returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MatchListResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/WrongParameters'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /users/{identifier}/seasons:
+    get:
+      tags:
+        - Users
+      summary: Get all user season results
+      operationId: getUserSeasons
+      parameters:
+        - $ref: '#/components/parameters/IdentifierParam'
+      responses:
+        '200':
+          description: User season history returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSeasonsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/WrongParameters'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /users/{identifier}/live:
+    get:
+      tags:
+        - Users
+      summary: Get user's live match data
+      operationId: getUserLiveData
+      description: Returns real-time match data from the private room the player is in.
+      security:
+        - PrivateKey: []
+      parameters:
+        - $ref: '#/components/parameters/IdentifierParam'
+      responses:
+        '200':
+          description: Live match data returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserLiveResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/WrongParameters'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /matches:
+    get:
+      tags:
+        - Matches
+      summary: Get recent matches
+      operationId: getRecentMatches
+      parameters:
+        - $ref: '#/components/parameters/BeforeParam'
+        - $ref: '#/components/parameters/AfterParam'
+        - $ref: '#/components/parameters/CountParam'
+        - $ref: '#/components/parameters/MatchTypeParam'
+        - $ref: '#/components/parameters/TagParam'
+        - $ref: '#/components/parameters/SeasonParam'
+        - $ref: '#/components/parameters/IncludeDecayParam'
+      responses:
+        '200':
+          description: Recent matches returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MatchListResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/WrongParameters'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /matches/{match_id}:
+    get:
+      tags:
+        - Matches
+      summary: Get match info
+      operationId: getMatchInfo
+      parameters:
+        - $ref: '#/components/parameters/MatchIdParam'
+      responses:
+        '200':
+          description: Match details returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MatchDetailResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/WrongParameters'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /live:
+    get:
+      tags:
+        - Live
+      summary: Get online players and public live matches
+      operationId: getPublicLiveData
+      responses:
+        '200':
+          description: Public live data returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicLiveResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/WrongParameters'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /leaderboard:
+    get:
+      tags:
+        - Leaderboards
+      summary: Get elo leaderboard
+      operationId: getEloLeaderboard
+      parameters:
+        - $ref: '#/components/parameters/SeasonParam'
+        - $ref: '#/components/parameters/CountryParam'
+      responses:
+        '200':
+          description: Elo leaderboard returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeaderboardResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/WrongParameters'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /phase-leaderboard:
+    get:
+      tags:
+        - Leaderboards
+      summary: Get season phase points leaderboard
+      operationId: getPhaseLeaderboard
+      parameters:
+        - $ref: '#/components/parameters/SeasonParam'
+        - $ref: '#/components/parameters/CountryParam'
+        - $ref: '#/components/parameters/PredictedParam'
+      responses:
+        '200':
+          description: Phase points leaderboard returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhaseLeaderboardResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/WrongParameters'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /record-leaderboard:
+    get:
+      tags:
+        - Leaderboards
+      summary: Get season best time leaderboard
+      operationId: getRecordLeaderboard
+      parameters:
+        - $ref: '#/components/parameters/SeasonZeroCurrentParam'
+        - $ref: '#/components/parameters/DistinctParam'
+      responses:
+        '200':
+          description: Record leaderboard returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordLeaderboardResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/WrongParameters'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /weekly-race:
+    get:
+      tags:
+        - Weekly Race
+      summary: Get current weekly race leaderboard
+      operationId: getCurrentWeeklyRace
+      responses:
+        '200':
+          description: Weekly race returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WeeklyRaceResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/WrongParameters'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /weekly-race/{id}:
+    get:
+      tags:
+        - Weekly Race
+      summary: Get a specific weekly race leaderboard
+      operationId: getWeeklyRaceById
+      parameters:
+        - $ref: '#/components/parameters/WeeklyRaceIdParam'
+      responses:
+        '200':
+          description: Weekly race returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WeeklyRaceResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/WrongParameters'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+components:
+  securitySchemes:
+    PrivateKey:
+      type: apiKey
+      in: header
+      name: Private-Key
+      description: Private key generated in-game from Profile -> Settings -> Generate & Copy API Private Key.
+  parameters:
+    IdentifierParam:
+      name: identifier
+      in: path
+      required: true
+      description: User identifier. Can be a UUID, nickname, or `discord.{id}`.
+      schema:
+        $ref: '#/components/schemas/UserIdentifier'
+    Identifier1Param:
+      name: identifier1
+      in: path
+      required: true
+      description: First user identifier. Can be a UUID, nickname, or `discord.{id}`.
+      schema:
+        $ref: '#/components/schemas/UserIdentifier'
+    Identifier2Param:
+      name: identifier2
+      in: path
+      required: true
+      description: Second user identifier. Can be a UUID, nickname, or `discord.{id}`.
+      schema:
+        $ref: '#/components/schemas/UserIdentifier'
+    MatchIdParam:
+      name: match_id
+      in: path
+      required: true
+      description: Match ID.
+      schema:
+        type: integer
+    WeeklyRaceIdParam:
+      name: id
+      in: path
+      required: true
+      description: Weekly race number.
+      schema:
+        type: integer
+    SeasonParam:
+      name: season
+      in: query
+      required: false
+      description: Season number. Defaults to the current season.
+      schema:
+        type: integer
+    SeasonZeroCurrentParam:
+      name: season
+      in: query
+      required: false
+      description: Season number. If set to `0`, the API uses the current season. If omitted, all seasons are combined.
+      schema:
+        type: integer
+    BeforeParam:
+      name: before
+      in: query
+      required: false
+      description: Match list cursor. Returns matches before this match ID.
+      schema:
+        type: integer
+    AfterParam:
+      name: after
+      in: query
+      required: false
+      description: Match list cursor. Returns matches after this match ID.
+      schema:
+        type: integer
+    CountParam:
+      name: count
+      in: query
+      required: false
+      description: Number of matches to return.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+    SortParam:
+      name: sort
+      in: query
+      required: false
+      description: Match list sort option.
+      schema:
+        type: string
+        enum:
+          - newest
+          - oldest
+          - fastest
+          - slowest
+        default: newest
+    MatchTypeParam:
+      name: type
+      in: query
+      required: false
+      description: Filter by match type.
+      schema:
+        $ref: '#/components/schemas/MatchType'
+    CountryParam:
+      name: country
+      in: query
+      required: false
+      description: Lowercased ISO 3166-1 alpha-2 country code.
+      schema:
+        type: string
+        pattern: ^[a-z]{2}$
+    TagParam:
+      name: tag
+      in: query
+      required: false
+      description: Filter matches by tag.
+      schema:
+        type: string
+    IncludeDecayParam:
+      name: includedecay
+      in: query
+      required: false
+      description: Include decay matches. The API accepts this as a boolean-style query parameter.
+      schema:
+        type: boolean
+      allowEmptyValue: true
+    ExcludeDecayParam:
+      name: excludedecay
+      in: query
+      required: false
+      description: Exclude decay matches.
+      schema:
+        type: boolean
+        default: false
+    PredictedParam:
+      name: predicted
+      in: query
+      required: false
+      description: Get predicted phase points. Must be `true` or `false` (the API also accepts `1` or `0`). Only works for the current season.
+      schema:
+        type: boolean
+    DistinctParam:
+      name: distinct
+      in: query
+      required: false
+      description: Return only the fastest run for each runner.
+      schema:
+        type: boolean
+      allowEmptyValue: true
+  responses:
+    BadRequest:
+      description: Requested data was not found or the request payload was invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    WrongParameters:
+      description: One or more parameters were invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    TooManyRequests:
+      description: Rate limit exceeded.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  schemas:
+    SuccessEnvelope:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - success
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - data
+      properties:
+        status:
+          type: string
+          enum:
+            - error
+        data:
+          oneOf:
+            - type: string
+            - type: object
+              additionalProperties: true
+            - type: 'null'
+    UserResponse:
+      allOf:
+        - $ref: '#/components/schemas/SuccessEnvelope'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              $ref: '#/components/schemas/UserDetails'
+    MatchListResponse:
+      allOf:
+        - $ref: '#/components/schemas/SuccessEnvelope'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/MatchInfo'
+    VersusResponse:
+      allOf:
+        - $ref: '#/components/schemas/SuccessEnvelope'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              $ref: '#/components/schemas/VersusStats'
+    UserSeasonsResponse:
+      allOf:
+        - $ref: '#/components/schemas/SuccessEnvelope'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              $ref: '#/components/schemas/UserSeasonSummary'
+    UserLiveResponse:
+      allOf:
+        - $ref: '#/components/schemas/SuccessEnvelope'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              $ref: '#/components/schemas/UserLiveData'
+    MatchDetailResponse:
+      allOf:
+        - $ref: '#/components/schemas/SuccessEnvelope'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              $ref: '#/components/schemas/MatchInfo'
+    PublicLiveResponse:
+      allOf:
+        - $ref: '#/components/schemas/SuccessEnvelope'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              $ref: '#/components/schemas/PublicLiveData'
+    LeaderboardResponse:
+      allOf:
+        - $ref: '#/components/schemas/SuccessEnvelope'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              $ref: '#/components/schemas/Leaderboard'
+    PhaseLeaderboardResponse:
+      allOf:
+        - $ref: '#/components/schemas/SuccessEnvelope'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              $ref: '#/components/schemas/PhaseLeaderboard'
+    RecordLeaderboardResponse:
+      allOf:
+        - $ref: '#/components/schemas/SuccessEnvelope'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/RecordLeaderboardEntry'
+    WeeklyRaceResponse:
+      allOf:
+        - $ref: '#/components/schemas/SuccessEnvelope'
+        - type: object
+          required:
+            - data
+          properties:
+            data:
+              $ref: '#/components/schemas/WeeklyRace'
+    UserIdentifier:
+      type: string
+      description: UUID, nickname, or `discord.{id}`.
+    Date:
+      type: integer
+      description: Epoch timestamp in seconds.
+    Time:
+      type: integer
+      description: Duration in milliseconds.
+    MatchType:
+      type: integer
+      description: Match type identifier.
+      enum:
+        - 1
+        - 2
+        - 3
+        - 4
+    UserProfile:
+      type: object
+      required:
+        - uuid
+        - nickname
+        - roleType
+        - eloRate
+        - eloRank
+        - country
+      properties:
+        uuid:
+          type: string
+          description: User UUID without dashes.
+        nickname:
+          type: string
+        roleType:
+          type: integer
+        eloRate:
+          type:
+            - integer
+            - 'null'
+        eloRank:
+          type:
+            - integer
+            - 'null'
+        country:
+          type:
+            - string
+            - 'null'
+          pattern: ^[a-z]{2}$
+    Achievement:
+      type: object
+      required:
+        - id
+        - date
+        - data
+        - level
+        - value
+        - goal
+      properties:
+        id:
+          type: string
+        date:
+          $ref: '#/components/schemas/Date'
+        data:
+          type: array
+          items:
+            type: string
+        level:
+          type: integer
+        value:
+          type:
+            - integer
+            - 'null'
+        goal:
+          type:
+            - integer
+            - 'null'
+    MatchSeed:
+      type: object
+      required:
+        - id
+        - overworld
+        - nether
+        - endTowers
+        - variations
+      properties:
+        id:
+          type:
+            - string
+            - 'null'
+        overworld:
+          type:
+            - string
+            - 'null'
+        nether:
+          type:
+            - string
+            - 'null'
+        endTowers:
+          type: array
+          items:
+            type: integer
+        variations:
+          type: array
+          items:
+            type: string
+    WeeklyRaceSeed:
+      type: object
+      required:
+        - overworld
+        - nether
+        - theEnd
+        - rng
+        - flags
+      properties:
+        overworld:
+          type: string
+        nether:
+          type: string
+        theEnd:
+          type: string
+        rng:
+          type: string
+        flags:
+          type: integer
+    RankedCasualStat:
+      type: object
+      required:
+        - ranked
+        - casual
+      properties:
+        ranked:
+          type:
+            - integer
+            - 'null'
+        casual:
+          type:
+            - integer
+            - 'null'
+    StatisticCategoryMap:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/RankedCasualStat'
+    UserConnection:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+    SeasonStanding:
+      type: object
+      required:
+        - eloRate
+        - eloRank
+        - phasePoint
+      properties:
+        eloRate:
+          type: integer
+        eloRank:
+          type:
+            - integer
+            - 'null'
+        phasePoint:
+          type: integer
+    SeasonPhaseResult:
+      type: object
+      required:
+        - phase
+        - eloRate
+        - eloRank
+        - point
+      properties:
+        phase:
+          type: integer
+        eloRate:
+          type: integer
+        eloRank:
+          type: integer
+        point:
+          type: integer
+    SeasonResultDetailed:
+      type: object
+      required:
+        - last
+        - highest
+        - lowest
+        - phases
+      properties:
+        last:
+          $ref: '#/components/schemas/SeasonStanding'
+        highest:
+          type: integer
+        lowest:
+          type: integer
+        phases:
+          type: array
+          items:
+            $ref: '#/components/schemas/SeasonPhaseResult'
+    WeeklyRaceResult:
+      type: object
+      required:
+        - id
+        - time
+        - rank
+      properties:
+        id:
+          type: integer
+        time:
+          $ref: '#/components/schemas/Time'
+        rank:
+          type: integer
+    UserDetails:
+      allOf:
+        - $ref: '#/components/schemas/UserProfile'
+        - type: object
+          required:
+            - achievements
+            - timestamp
+            - statistics
+            - connections
+            - seasonResult
+            - weeklyRaces
+          properties:
+            achievements:
+              type: object
+              required:
+                - display
+                - total
+              properties:
+                display:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Achievement'
+                total:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Achievement'
+            timestamp:
+              type: object
+              required:
+                - firstOnline
+                - lastOnline
+                - lastRanked
+                - nextDecay
+              properties:
+                firstOnline:
+                  $ref: '#/components/schemas/Date'
+                lastOnline:
+                  $ref: '#/components/schemas/Date'
+                lastRanked:
+                  $ref: '#/components/schemas/Date'
+                nextDecay:
+                  type:
+                    - integer
+                    - 'null'
+            statistics:
+              type: object
+              required:
+                - season
+                - total
+              properties:
+                season:
+                  $ref: '#/components/schemas/StatisticCategoryMap'
+                total:
+                  $ref: '#/components/schemas/StatisticCategoryMap'
+            connections:
+              type: object
+              additionalProperties:
+                $ref: '#/components/schemas/UserConnection'
+            seasonResult:
+              oneOf:
+                - $ref: '#/components/schemas/SeasonResultDetailed'
+                - type: 'null'
+            weeklyRaces:
+              type: array
+              items:
+                $ref: '#/components/schemas/WeeklyRaceResult'
+    UserSeasonSummary:
+      allOf:
+        - $ref: '#/components/schemas/UserProfile'
+        - type: object
+          required:
+            - seasonResults
+          properties:
+            seasonResults:
+              type: object
+              additionalProperties:
+                $ref: '#/components/schemas/SeasonResultDetailed'
+    MatchResult:
+      type: object
+      required:
+        - uuid
+        - time
+      properties:
+        uuid:
+          type:
+            - string
+            - 'null'
+        time:
+          $ref: '#/components/schemas/Time'
+    MatchRank:
+      type: object
+      required:
+        - season
+        - allTime
+      properties:
+        season:
+          type:
+            - integer
+            - 'null'
+        allTime:
+          type:
+            - integer
+            - 'null'
+    MatchChange:
+      type: object
+      required:
+        - uuid
+        - change
+        - eloRate
+      properties:
+        uuid:
+          type: string
+        change:
+          type:
+            - integer
+            - 'null'
+        eloRate:
+          type:
+            - integer
+            - 'null'
+    MatchVod:
+      type: object
+      required:
+        - uuid
+        - url
+        - startsAt
+      properties:
+        uuid:
+          type: string
+        url:
+          type: string
+        startsAt:
+          $ref: '#/components/schemas/Date'
+    CompletionEntry:
+      type: object
+      required:
+        - uuid
+        - time
+      properties:
+        uuid:
+          type: string
+        time:
+          $ref: '#/components/schemas/Time'
+    TimelineEntry:
+      type: object
+      required:
+        - uuid
+        - time
+        - type
+      properties:
+        uuid:
+          type: string
+        time:
+          $ref: '#/components/schemas/Time'
+        type:
+          type: string
+    MatchInfo:
+      type: object
+      required:
+        - id
+        - type
+        - season
+        - date
+        - players
+        - spectators
+        - result
+        - forfeited
+        - decayed
+        - rank
+        - changes
+        - beginner
+        - botSource
+      properties:
+        id:
+          type: integer
+        type:
+          $ref: '#/components/schemas/MatchType'
+        season:
+          type: integer
+        category:
+          type:
+            - string
+            - 'null'
+        gameMode:
+          type:
+            - string
+            - 'null'
+        date:
+          $ref: '#/components/schemas/Date'
+        players:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserProfile'
+        spectators:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserProfile'
+        seed:
+          oneOf:
+            - $ref: '#/components/schemas/MatchSeed'
+            - type: 'null'
+        result:
+          $ref: '#/components/schemas/MatchResult'
+        forfeited:
+          type: boolean
+        decayed:
+          type: boolean
+        rank:
+          $ref: '#/components/schemas/MatchRank'
+        changes:
+          type: array
+          items:
+            $ref: '#/components/schemas/MatchChange'
+        vod:
+          type: array
+          items:
+            $ref: '#/components/schemas/MatchVod'
+        completions:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompletionEntry'
+        timelines:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimelineEntry'
+        tag:
+          type:
+            - string
+            - 'null'
+        replayExist:
+          type: boolean
+        beginner:
+          type: boolean
+        botSource:
+          type:
+            - string
+            - 'null'
+        seedType:
+          type:
+            - string
+            - 'null'
+        bastionType:
+          type:
+            - string
+            - 'null'
+    VersusResultMap:
+      type: object
+      additionalProperties:
+        type: integer
+    VersusStats:
+      type: object
+      required:
+        - players
+        - results
+        - changes
+      properties:
+        players:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserProfile'
+        results:
+          type: object
+          required:
+            - ranked
+            - casual
+          properties:
+            ranked:
+              $ref: '#/components/schemas/VersusResultMap'
+            casual:
+              $ref: '#/components/schemas/VersusResultMap'
+        changes:
+          type: object
+          additionalProperties:
+            type: integer
+    UserLiveData:
+      type: object
+      required:
+        - lastId
+        - type
+        - status
+        - time
+        - players
+        - spectators
+        - timelines
+        - completions
+      properties:
+        lastId:
+          type:
+            - integer
+            - 'null'
+        type:
+          $ref: '#/components/schemas/MatchType'
+        status:
+          type: string
+          enum:
+            - idle
+            - counting
+            - generate
+            - ready
+            - running
+            - done
+        time:
+          $ref: '#/components/schemas/Time'
+        players:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserProfile'
+        spectators:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserProfile'
+        timelines:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimelineEntry'
+        completions:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompletionEntry'
+    LiveTimelineSnapshot:
+      type: object
+      required:
+        - time
+        - type
+      properties:
+        time:
+          $ref: '#/components/schemas/Time'
+        type:
+          type: string
+    LiveMatchPlayerData:
+      type: object
+      required:
+        - liveUrl
+        - timeline
+      properties:
+        liveUrl:
+          type:
+            - string
+            - 'null'
+        timeline:
+          oneOf:
+            - $ref: '#/components/schemas/LiveTimelineSnapshot'
+            - type: 'null'
+    LiveMatch:
+      type: object
+      required:
+        - currentTime
+        - players
+        - data
+      properties:
+        currentTime:
+          $ref: '#/components/schemas/Time'
+        players:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserProfile'
+        data:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/LiveMatchPlayerData'
+    PublicLiveData:
+      type: object
+      required:
+        - players
+        - liveMatches
+      properties:
+        players:
+          type: integer
+        liveMatches:
+          type: array
+          items:
+            $ref: '#/components/schemas/LiveMatch'
+    LeaderboardSeason:
+      type: object
+      required:
+        - startsAt
+        - endsAt
+        - number
+      properties:
+        startsAt:
+          $ref: '#/components/schemas/Date'
+        endsAt:
+          $ref: '#/components/schemas/Date'
+        number:
+          type: integer
+    UserProfileWithSeasonResult:
+      allOf:
+        - $ref: '#/components/schemas/UserProfile'
+        - type: object
+          required:
+            - seasonResult
+          properties:
+            seasonResult:
+              $ref: '#/components/schemas/SeasonStanding'
+    Leaderboard:
+      type: object
+      required:
+        - season
+        - users
+      properties:
+        season:
+          $ref: '#/components/schemas/LeaderboardSeason'
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserProfileWithSeasonResult'
+    PhaseInfo:
+      type: object
+      required:
+        - endsAt
+        - number
+        - season
+      properties:
+        endsAt:
+          type:
+            - integer
+            - 'null'
+        number:
+          type:
+            - integer
+            - 'null'
+        season:
+          type: integer
+    UserProfileWithPredictedPoints:
+      allOf:
+        - $ref: '#/components/schemas/UserProfileWithSeasonResult'
+        - type: object
+          required:
+            - predPhasePoint
+          properties:
+            predPhasePoint:
+              type: integer
+    PhaseLeaderboard:
+      type: object
+      required:
+        - phase
+        - users
+      properties:
+        phase:
+          $ref: '#/components/schemas/PhaseInfo'
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserProfileWithPredictedPoints'
+    RecordLeaderboardEntry:
+      type: object
+      required:
+        - rank
+        - id
+        - season
+        - date
+        - time
+        - user
+        - seed
+      properties:
+        rank:
+          type: integer
+        id:
+          type: integer
+        season:
+          type: integer
+        date:
+          $ref: '#/components/schemas/Date'
+        time:
+          $ref: '#/components/schemas/Time'
+        user:
+          $ref: '#/components/schemas/UserProfile'
+        seed:
+          $ref: '#/components/schemas/MatchSeed'
+    WeeklyRaceEntry:
+      type: object
+      required:
+        - rank
+        - player
+        - time
+        - replayExist
+      properties:
+        rank:
+          type: integer
+        player:
+          $ref: '#/components/schemas/UserProfile'
+        time:
+          $ref: '#/components/schemas/Time'
+        replayExist:
+          type: boolean
+    WeeklyRace:
+      type: object
+      required:
+        - id
+        - seed
+        - endsAt
+        - leaderboard
+      properties:
+        id:
+          type: integer
+        seed:
+          $ref: '#/components/schemas/WeeklyRaceSeed'
+        endsAt:
+          $ref: '#/components/schemas/Date'
+        leaderboard:
+          type: array
+          items:
+            $ref: '#/components/schemas/WeeklyRaceEntry'
