@@ -27,6 +27,7 @@ tags:
   - name: Live
   - name: Leaderboards
   - name: Weekly Race
+  - name: Status Page
 paths:
   /users/{identifier}:
     get:
@@ -347,6 +348,28 @@ paths:
           $ref: '#/components/responses/WrongParameters'
         '429':
           $ref: '#/components/responses/TooManyRequests'
+  /api/status-page/heartbeat/mcsrranked:
+    get:
+      tags:
+        - Status Page
+      summary: Get service heartbeats
+      description: |
+        Returns the 100 most recent public heartbeats for each service on the MCSR Ranked status page,
+        plus each service's rolling 24-hour uptime ratio.
+
+        Monitor IDs currently map to `2` Game Server, `3` API, `4` Store, and `5` Wiki.
+        Heartbeat status values are `0` down, `1` up, `2` pending, and `3` maintenance.
+      operationId: getStatusPageHeartbeats
+      servers:
+        - url: https://status.mcsrranked.com
+          description: MCSR Ranked Status
+      responses:
+        '200':
+          description: Public heartbeat history and 24-hour uptime ratios returned successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusHeartbeatResponse'
 components:
   securitySchemes:
     PrivateKey:
@@ -514,6 +537,62 @@ components:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
   schemas:
+    StatusHeartbeatResponse:
+      type: object
+      required:
+        - heartbeatList
+        - uptimeList
+      properties:
+        heartbeatList:
+          type: object
+          description: Heartbeat history keyed by monitor ID, ordered oldest to newest.
+          additionalProperties:
+            type: array
+            maxItems: 100
+            items:
+              $ref: '#/components/schemas/StatusHeartbeat'
+        uptimeList:
+          type: object
+          description: Rolling 24-hour uptime ratios keyed as `{monitorId}_24`.
+          additionalProperties:
+            type: number
+            minimum: 0
+            maximum: 1
+            examples:
+              - 1
+    StatusHeartbeat:
+      type: object
+      required:
+        - status
+        - time
+        - msg
+        - ping
+      properties:
+        status:
+          type: integer
+          description: Heartbeat status. `0` down, `1` up, `2` pending, or `3` maintenance.
+          enum:
+            - 0
+            - 1
+            - 2
+            - 3
+        time:
+          type: string
+          description: Heartbeat time in `YYYY-MM-DD HH:mm:ss` format.
+          examples:
+            - '2026-07-21 13:11:27'
+        msg:
+          type: string
+          description: Public message; currently redacted to an empty string.
+          examples:
+            - ''
+        ping:
+          description: Response time in milliseconds, or `null` when unavailable.
+          type:
+            - number
+            - 'null'
+          examples:
+            - 85
     SuccessEnvelope:
       type: object
       required:
