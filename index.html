@@ -120,7 +120,8 @@
                 <pre>https://mcsrranked.com/api/</pre>
               </div>
               <div class="panel-body">
-                You can use both, but we recommend using the first one.<br><br>
+                You can use both, but we recommend using the first one because it has a shorter cache period.<br><br>
+                Responses from <code>https://api.mcsrranked.com</code> are cached for 5 seconds, except <code>GET /users/{identifier}/live</code>, which is not cached. Responses from <code>https://mcsrranked.com/api</code> are cached for 30 seconds.<br><br>
                 <a class="btn btn-primary" href="openapi.yaml" target="_blank"><i class="fa fa-file-code"></i> OpenAPI YAML</a>
               </div>
           </div>

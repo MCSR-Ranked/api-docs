@@ -8,13 +8,18 @@ info:
     All endpoints are limited to 500 requests per 10 minutes unless otherwise specified.
     If you need expanded rate limits, request an API key through the MCSR Ranked Discord server.
 
+    Responses from `https://api.mcsrranked.com` are cached for 5 seconds, except
+    `GET /users/{identifier}/live`, which is not cached. Responses from
+    `https://mcsrranked.com/api` are cached for 30 seconds. The primary server is recommended
+    because it has a shorter cache period.
+
     All endpoints are public except `GET /users/{identifier}/live`, which requires a `Private-Key`
     header generated in-game.
 servers:
   - url: https://api.mcsrranked.com
-    description: Recommended production server
+    description: Recommended production server; 5-second cache except for the live user endpoint
   - url: https://mcsrranked.com/api
-    description: Alternate production server
+    description: Alternate production server; 30-second cache
 tags:
   - name: Users
   - name: Versus
