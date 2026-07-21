@@ -97,6 +97,9 @@
               <a href="#responses-api-weekly-races" data-toggle="collapse" class="collapsed"><i class="fa fa-calendar-week"></i><span>Weekly Races</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
               <div id="responses-api-weekly-races" class="collapse"><ul class="nav"></ul></div>
             </li>
+            <li>
+              <a href="#status-page-heartbeats"><i class="fa fa-heartbeat"></i><span>Status Page</span></a>
+            </li>
             <li style="min-height: 80px;"></li>
           </ul>
         </nav>
@@ -118,14 +121,73 @@
               <div class="panel-heading">
                 <pre>https://api.mcsrranked.com/</pre>
                 <pre>https://mcsrranked.com/api/</pre>
+                <pre>https://status.mcsrranked.com/ <small>(Status Page endpoint only)</small></pre>
               </div>
               <div class="panel-body">
                 You can use both, but we recommend using the first one because it has a shorter cache period.<br><br>
                 Responses from <code>https://api.mcsrranked.com</code> are cached for 5 seconds, except <code>GET /users/{identifier}/live</code>, which is not cached. Responses from <code>https://mcsrranked.com/api</code> are cached for 30 seconds.<br><br>
+                The Status Page endpoint is served separately from <code>https://status.mcsrranked.com</code>. See the <a href="https://status.mcsrranked.com/" target="_blank">human-readable status page</a> for incidents and maintenance details.<br><br>
                 <a class="btn btn-primary" href="openapi.yaml" target="_blank"><i class="fa fa-file-code"></i> OpenAPI YAML</a>
               </div>
           </div>
         </div>
+        <div class="container-fluid" id="status-page-heartbeats">
+          <h2 class="page-title"><strong>Get Service Heartbeats</strong></h2>
+          <h4 class="page-title">Returns the 100 most recent public heartbeats for each service on the MCSR Ranked status page, plus each service's rolling 24-hour uptime ratio.</h4>
+          <p>Monitor IDs currently map to <code>2</code> Game Server, <code>3</code> API, <code>4</code> Store, and <code>5</code> Wiki. Heartbeat status values are <code>0</code> down, <code>1</code> up, <code>2</code> pending, and <code>3</code> maintenance.</p>
+          <div class="row">
+            <div class="panel">
+              <div class="panel-heading">
+                <h3 class="panel-title"><span class="label label-success">GET</span> &nbsp; <code>https://status.mcsrranked.com/api/status-page/heartbeat/mcsrranked</code></h3>
+              </div>
+              <div class="panel-body">This endpoint has no parameters.</div>
+            </div>
+            <div class="panel">
+              <div class="panel-heading pointer" data-toggle="collapse" data-target="#status-page-heartbeats-type">
+                <h3 class="panel-title">Response Type</h3>
+              </div>
+              <div class="panel-body collapse" id="status-page-heartbeats-type">
+                <table class="table table-hover">
+                  <thead>
+                    <tr><th>Parameter</th><th>Type</th><th>Description</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>heartbeatList.{monitorId}[]</td><td><code>StatusHeartbeat[]</code></td><td>Heartbeat history keyed by monitor ID, ordered oldest to newest and limited to 100 entries per monitor</td></tr>
+                    <tr><td>heartbeatList.{monitorId}[].status</td><td><code>Integer</code></td><td><code>0</code> down, <code>1</code> up, <code>2</code> pending, or <code>3</code> maintenance</td></tr>
+                    <tr><td>heartbeatList.{monitorId}[].time</td><td><code>String</code></td><td>Heartbeat time in <code>YYYY-MM-DD HH:mm:ss</code> format</td></tr>
+                    <tr><td>heartbeatList.{monitorId}[].msg</td><td><code>String</code></td><td>Public message; currently redacted to an empty string</td></tr>
+                    <tr><td>heartbeatList.{monitorId}[].ping</td><td><code>Number?</code></td><td>Response time in milliseconds, or <code>null</code> when unavailable</td></tr>
+                    <tr><td>uptimeList.{monitorId}_24</td><td><code>Number</code></td><td>Rolling 24-hour uptime as a ratio from <code>0</code> to <code>1</code></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-heading pointer" data-toggle="collapse" data-target="#status-page-heartbeats-sample">
+                <h3 class="panel-title">Show Sample Response</h3>
+              </div>
+              <div class="panel-body collapse" id="status-page-heartbeats-sample">
+                <pre><code class="json">{
+    "heartbeatList": {
+        "2": [
+            {
+                "status": 1,
+                "time": "2026-07-21 13:11:27",
+                "msg": "",
+                "ping": 85
+            }
+        ]
+    },
+    "uptimeList": {
+        "2_24": 1
+    }
+}</code></pre>
+                <a href="https://status.mcsrranked.com/api/status-page/heartbeat/mcsrranked" target="_blank">Show Full Response</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr />
         <div class="container-fluid" id="authentication">
             <h2><strong>Authentication</strong></h2>
             <p>Many of the endpoints do not require authentication. To get a key for those that do, open an MCSR Ranked instance, go to Profile &rarr; Settings &rarr; Generate & Copy API Private Key.</p>
