@@ -135,19 +135,34 @@ const endpoints = {
                 description: 'Lowest Elo rate this season'
             },
             {
+                name: 'seasonResult.phases[].type',
+                type: 'String',
+                description: 'How phase points were awarded, either `eloRate` or `highest`. Determines which of the fields below are present'
+            },
+            {
                 name: 'seasonResult.phases[].phase',
                 type: 'Integer',
                 description: 'Phase number'
             },
             {
                 name: 'seasonResult.phases[].eloRate',
-                type: 'Integer',
-                description: 'Elo rate at phase end'
+                type: 'Integer?',
+                description: 'Elo rate at phase end. Only present when `type` is `eloRate`'
             },
             {
                 name: 'seasonResult.phases[].eloRank',
-                type: 'Integer',
-                description: 'Leaderboard rank at phase end'
+                type: 'Integer?',
+                description: 'Leaderboard rank at phase end. Only present when `type` is `eloRate`'
+            },
+            {
+                name: 'seasonResult.phases[].highestRate',
+                type: 'Integer?',
+                description: 'Highest Elo rate reached during the phase. Only present when `type` is `highest`'
+            },
+            {
+                name: 'seasonResult.phases[].highestRank',
+                type: 'Integer?',
+                description: 'Highest leaderboard rank reached during the phase. Only present when `type` is `highest`'
             },
             {
                 name: 'seasonResult.phases[].point',
@@ -408,19 +423,34 @@ const endpoints = {
                 description: 'Lowest Elo rate this season'
             },
             {
+                name: 'seasonResults.{season}.phases[].type',
+                type: 'String',
+                description: 'How phase points were awarded, either `eloRate` or `highest`. Determines which of the fields below are present'
+            },
+            {
                 name: 'seasonResults.{season}.phases[].phase',
                 type: 'Integer',
                 description: 'Phase number'
             },
             {
                 name: 'seasonResults.{season}.phases[].eloRate',
-                type: 'Integer',
-                description: 'Elo rate at phase end'
+                type: 'Integer?',
+                description: 'Elo rate at phase end. Only present when `type` is `eloRate`'
             },
             {
                 name: 'seasonResults.{season}.phases[].eloRank',
-                type: 'Integer',
-                description: 'Leaderboard rank at phase end'
+                type: 'Integer?',
+                description: 'Leaderboard rank at phase end. Only present when `type` is `eloRate`'
+            },
+            {
+                name: 'seasonResults.{season}.phases[].highestRate',
+                type: 'Integer?',
+                description: 'Highest Elo rate reached during the phase. Only present when `type` is `highest`'
+            },
+            {
+                name: 'seasonResults.{season}.phases[].highestRank',
+                type: 'Integer?',
+                description: 'Highest leaderboard rank reached during the phase. Only present when `type` is `highest`'
             },
             {
                 name: 'seasonResults.{season}.phases[].point',
