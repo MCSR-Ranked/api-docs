@@ -878,7 +878,7 @@ const endpoints = {
                 type: 'Time'
             },
             {
-                name: 'leaderboard[].replayExist',
+                name: 'leaderboard[].replayExists',
                 type: 'Boolean'
             }
         ],
