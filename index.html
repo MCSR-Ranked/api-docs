@@ -53,7 +53,6 @@
                 <ul class="nav">
                   <li><a href="#response-200" class=""><span class="label label-success">200</span> &nbsp; Success</a></li>
                   <li><a href="#response-400" class=""><span class="label label-danger">400</span> &nbsp; Data Not Found</a></li>
-                  <li><a href="#response-401" class=""><span class="label label-danger">401</span> &nbsp; Wrong Parameters</a></li>
                   <li><a href="#response-429" class=""><span class="label label-danger">429</span> &nbsp; Too Many Requests</a></li>
                 </ul>
               </div>
@@ -219,7 +218,7 @@
         <hr />
         <div class="container-fluid" id="response-400">
           <h2 class="page-title"><strong><span class="label label-danger">400</span> &nbsp; Data Not Found</strong></h2>
-          <h4 class="page-title">JSON response when there's no data. However, as an exception, array type returns an empty array instead of this error.</h4>
+          <h4 class="page-title">JSON response when there's no data or incorrect parameters are provided. The <code>data</code> of the API response will explain what went wrong. However, as an exception, array type returns an empty array instead of this error.</h4>
           <div class="row">
             <div class="panel">
               <div class="panel-heading">
@@ -235,29 +234,6 @@
               </div>
               <div class="panel-body collapse" id="c-response-400-sample">
                 <pre class="endpoint-example" data-target="response/400"></pre>
-              </div>
-            </div>
-          </div>
-        </div>
-        <hr />
-        <div class="container-fluid" id="response-401">
-          <h2 class="page-title"><strong><span class="label label-danger">401</span> &nbsp; Wrong Parameters</strong></h2>
-          <h4 class="page-title">JSON response when incorrect parameters are provided. The <code>data</code> of the API response will explain what went wrong.</h4>
-          <div class="row">
-            <div class="panel">
-              <div class="panel-heading">
-                <h3 class="panel-title">Response Type</h3>
-              </div>
-              <div class="panel-body">
-                <pre class="endpoint-type" data-target="response/401"></pre>
-              </div>
-            </div>
-            <div class="panel">
-              <div class="panel-heading pointer" data-toggle="collapse" data-target="#c-response-401-sample">
-                <h3 class="panel-title">Sample Response</h3>
-              </div>
-              <div class="panel-body collapse" id="c-response-401-sample">
-                <pre class="endpoint-example" data-target="response/401"></pre>
               </div>
             </div>
           </div>
@@ -539,9 +515,9 @@
                       <td>(Advanced) Identifier of timeline</td>
                     </tr>
                     <tr>
-                      <td>replayExist</td>
-                      <td><code>Boolean</code></td>
-                      <td>(Advanced) Whether the match replay exists in the server</td>
+                      <td>replayExists</td>
+                      <td><code>Integer</code></td>
+                      <td><code>0</code> if the match replay doesn't exist in the server, <code>1</code> if it exists, or <code>2</code> if it is stored permanently (for example, record runs)</td>
                     </tr>
                   </tbody>
                 </table>
@@ -581,8 +557,8 @@
                     </tr>
                     <tr>
                       <td>endTowers</td>
-                      <td><code>Integer[]</code></td>
-                      <td>The <a href="./assets/img/endTowers.png" target="_blank">zero related tower</a> heights of in The End dimension. It is an empty array if the seed is not filtered.</td>
+                      <td><code>Integer[]?</code></td>
+                      <td>The <a href="./assets/img/endTowers.png" target="_blank">zero related tower</a> heights of in The End dimension. It is <code>null</code> if the seed is not filtered.</td>
                     </tr>
                     <tr>
                       <td>variations</td>
