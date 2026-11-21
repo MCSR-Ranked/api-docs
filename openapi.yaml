@@ -47,8 +47,6 @@ paths:
                 $ref: '#/components/schemas/UserResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/WrongParameters'
         '429':
           $ref: '#/components/responses/TooManyRequests'
   /users/{identifier}/matches:
@@ -75,8 +73,6 @@ paths:
                 $ref: '#/components/schemas/MatchListResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/WrongParameters'
         '429':
           $ref: '#/components/responses/TooManyRequests'
   /users/{identifier1}/versus/{identifier2}:
@@ -98,8 +94,6 @@ paths:
                 $ref: '#/components/schemas/VersusResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/WrongParameters'
         '429':
           $ref: '#/components/responses/TooManyRequests'
   /users/{identifier1}/versus/{identifier2}/matches:
@@ -125,8 +119,6 @@ paths:
                 $ref: '#/components/schemas/MatchListResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/WrongParameters'
         '429':
           $ref: '#/components/responses/TooManyRequests'
   /users/{identifier}/seasons:
@@ -146,8 +138,6 @@ paths:
                 $ref: '#/components/schemas/UserSeasonsResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/WrongParameters'
         '429':
           $ref: '#/components/responses/TooManyRequests'
   /users/{identifier}/live:
@@ -170,8 +160,6 @@ paths:
                 $ref: '#/components/schemas/UserLiveResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/WrongParameters'
         '429':
           $ref: '#/components/responses/TooManyRequests'
   /matches:
@@ -197,8 +185,6 @@ paths:
                 $ref: '#/components/schemas/MatchListResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/WrongParameters'
         '429':
           $ref: '#/components/responses/TooManyRequests'
   /matches/{match_id}:
@@ -218,8 +204,6 @@ paths:
                 $ref: '#/components/schemas/MatchDetailResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/WrongParameters'
         '429':
           $ref: '#/components/responses/TooManyRequests'
   /live:
@@ -237,8 +221,6 @@ paths:
                 $ref: '#/components/schemas/PublicLiveResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/WrongParameters'
         '429':
           $ref: '#/components/responses/TooManyRequests'
   /leaderboard:
@@ -259,8 +241,6 @@ paths:
                 $ref: '#/components/schemas/LeaderboardResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/WrongParameters'
         '429':
           $ref: '#/components/responses/TooManyRequests'
   /phase-leaderboard:
@@ -282,8 +262,6 @@ paths:
                 $ref: '#/components/schemas/PhaseLeaderboardResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/WrongParameters'
         '429':
           $ref: '#/components/responses/TooManyRequests'
   /record-leaderboard:
@@ -304,8 +282,6 @@ paths:
                 $ref: '#/components/schemas/RecordLeaderboardResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/WrongParameters'
         '429':
           $ref: '#/components/responses/TooManyRequests'
   /weekly-race:
@@ -323,8 +299,6 @@ paths:
                 $ref: '#/components/schemas/WeeklyRaceResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/WrongParameters'
         '429':
           $ref: '#/components/responses/TooManyRequests'
   /weekly-race/{id}:
@@ -344,8 +318,6 @@ paths:
                 $ref: '#/components/schemas/WeeklyRaceResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/WrongParameters'
         '429':
           $ref: '#/components/responses/TooManyRequests'
   /api/status-page/heartbeat/mcsrranked:
@@ -493,7 +465,6 @@ components:
       description: Include decay matches. The API accepts this as a boolean-style query parameter.
       schema:
         type: boolean
-      allowEmptyValue: true
     ExcludeDecayParam:
       name: excludedecay
       in: query
@@ -516,16 +487,9 @@ components:
       description: Return only the fastest run for each runner.
       schema:
         type: boolean
-      allowEmptyValue: true
   responses:
     BadRequest:
       description: Requested data was not found or the request payload was invalid.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    WrongParameters:
-      description: One or more parameters were invalid.
       content:
         application/json:
           schema:
@@ -818,7 +782,9 @@ components:
             - string
             - 'null'
         endTowers:
-          type: array
+          type:
+            - array
+            - 'null'
           items:
             type: integer
         variations:
@@ -843,7 +809,9 @@ components:
         rng:
           type: string
         flags:
-          type: integer
+          type:
+            - integer
+            - 'null'
     RankedCasualStat:
       type: object
       required:
@@ -880,7 +848,9 @@ components:
         - phasePoint
       properties:
         eloRate:
-          type: integer
+          type:
+            - integer
+            - 'null'
         eloRank:
           type:
             - integer
@@ -936,9 +906,13 @@ components:
         last:
           $ref: '#/components/schemas/SeasonStanding'
         highest:
-          type: integer
+          type:
+            - integer
+            - 'null'
         lowest:
-          type: integer
+          type:
+            - integer
+            - 'null'
         phases:
           type: array
           items:
@@ -1185,13 +1159,13 @@ components:
           type:
             - string
             - 'null'
-        replayExist:
-          type: boolean
+        replayExists:
+          type: integer
         beginner:
           type: boolean
         botSource:
           type:
-            - string
+            - integer
             - 'null'
         seedType:
           type:

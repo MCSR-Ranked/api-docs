@@ -1,7 +1,6 @@
 const responses = {
     'response/200': `{"status":"success","data":{}}`,
-    'response/400': `{"status":"error","data":null}`,
-    'response/401': `{"status":"error","data":"invalid \`type\` query. it must be >= 0 or <= 3"}`,
+    'response/400': `{"status":"error","data":{"error":"User is not exists."}}`,
     'response/429': `{"status":"error","data":"Too many requests"}`,
 };
 
@@ -111,7 +110,7 @@ const endpoints = {
             },
             {
                 name: 'seasonResult.last.eloRate',
-                type: 'Integer',
+                type: 'Integer?',
                 description: 'Current Elo rate this season'
             },
             {
@@ -126,12 +125,12 @@ const endpoints = {
             },
             {
                 name: 'seasonResult.highest',
-                type: 'Integer',
+                type: 'Integer?',
                 description: 'Highest Elo rate this season'
             },
             {
                 name: 'seasonResult.lowest',
-                type: 'Integer',
+                type: 'Integer?',
                 description: 'Lowest Elo rate this season'
             },
             {
@@ -259,7 +258,7 @@ const endpoints = {
         title: `Get Versus Stats`,
         method: 'GET',
         category: 'versus',
-        description: 'Returns the match stats between `{identifier1}` and `{identifier2}` for ranked/casual matches. If they haven\'t played each other, a `400` error will be returned.',
+        description: 'Returns the match stats between `{identifier1}` and `{identifier2}` for ranked/casual matches. If they haven\'t played each other, all values are `0`.',
         params: [
             {
                 name: '{identifier1}',
@@ -359,7 +358,7 @@ const endpoints = {
         title: `Get All User Season Results`,
         method: 'GET',
         category: 'users',
-        description: 'Returns the `{identifier}`\'s entire profile data.',
+        description: 'Returns `{identifier}`\'s results for every season.',
         params: [
             {
                 name: '{identifier}',
@@ -399,7 +398,7 @@ const endpoints = {
             },
             {
                 name: 'seasonResults.{season}.last.eloRate',
-                type: 'Integer',
+                type: 'Integer?',
                 description: 'Current Elo rate this season'
             },
             {
@@ -414,12 +413,12 @@ const endpoints = {
             },
             {
                 name: 'seasonResults.{season}.highest',
-                type: 'Integer',
+                type: 'Integer?',
                 description: 'Highest Elo rate this season'
             },
             {
                 name: 'seasonResults.{season}.lowest',
-                type: 'Integer',
+                type: 'Integer?',
                 description: 'Lowest Elo rate this season'
             },
             {
@@ -579,9 +578,9 @@ const endpoints = {
             },
             {
                 name: 'includedecay',
-                type: 'any?',
+                type: 'Boolean',
                 required: false,
-                description: 'Whether to include decay matches. If you want to use it, just add the key of the parameter, such as `?includedecay`'
+                description: 'Whether to include decay matches.'
             },
         ],
         structures: [
@@ -728,7 +727,7 @@ const endpoints = {
             },
             {
                 name: 'predicted',
-                type: 'Any',
+                type: 'Boolean',
                 required: false,
                 description: 'Get predicted phase points leaderboard. Only works with the current season'
             }
@@ -759,7 +758,7 @@ const endpoints = {
             },
             {
                 name: 'users[].seasonResult.eloRank',
-                type: 'Integer',
+                type: 'Integer?',
                 description: 'Final leaderboard rank of player in target season'
             },
             {
@@ -773,7 +772,7 @@ const endpoints = {
                 description: 'Predicted phase points of player for next phase. It will be same value with `users[].seasonResult.phasePoint` if response is a past season.'
             }
         ],
-        sampleUrl: `https://api.mcsrranked.com/phase-leaderboard?predicted`
+        sampleUrl: `https://api.mcsrranked.com/phase-leaderboard?predicted=true`
     },
     'record-leaderboard': {
         title: `Get Season Best Time Leaderboard`,
@@ -789,7 +788,7 @@ const endpoints = {
             },
             {
                 name: 'distinct',
-                type: 'any?',
+                type: 'Boolean',
                 required: false,
                 description: 'Whether to only get distinct runners. If enabled, only the fastest run of each runner is returned.'
             }
@@ -871,14 +870,14 @@ const endpoints = {
             },
             {
                 name: 'leaderboard[].player',
-                type: 'User'
+                type: 'UserProfile'
             },
             {
                 name: 'leaderboard[].time',
                 type: 'Time'
             },
             {
-                name: 'leaderboard[].replayExists',
+                name: 'leaderboard[].replayExist',
                 type: 'Boolean'
             }
         ],
